@@ -1,0 +1,42 @@
+{
+  "scope": "Native XML email/password authentication extension",
+  "checks": {
+    "debugBuild": "passed",
+    "unitTests": "passed",
+    "lint": "passed; zero errors",
+    "androidTestBuild": "passed",
+    "phoneAuthIntegration": "passed, 10.389 seconds",
+    "largeFontAuthIntegration": "passed, 10.036 seconds",
+    "tabletAuthIntegration": "passed, 12.436 seconds"
+  },
+  "coverage": [
+    "invalid email",
+    "password confirmation",
+    "rotation and retained retry fields",
+    "Firebase signup and profile name",
+    "Firestore profile persistence",
+    "sign out",
+    "incorrect credentials",
+    "reset email request",
+    "successful sign in",
+    "Back during pending sign in",
+    "late session rejection",
+    "retry after cancellation"
+  ],
+  "limits": [
+    "Firebase Authentication/Firestore tests used isolated local emulators",
+    "Initial font runs failed intermittently; stage diagnostics and UI-thread condition synchronization added, then diagnostic and all final confirmation runs passed; no definitive initial failure cause claimed",
+    "Production email delivery and Google account sign-in were not exercised",
+    "The missing debug SHA-1 was registered and Android OAuth config refreshed after the user authenticated Firebase CLI"
+  ],
+  "captures": ".impeccable/review/email-auth",
+  "apk": "artifacts/shield-archives-debug.apk",
+  "firebaseProductionConfiguration": {
+    "googleProviderEnabled": true,
+    "emailPasswordProviderEnabled": true,
+    "debugSHA1Registered": true,
+    "debugSHA256Registered": true,
+    "androidOAuthClientMatchesDebugSHA1": true,
+    "googleServicesRefreshed": true
+  }
+}

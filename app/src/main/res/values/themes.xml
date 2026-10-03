@@ -1,0 +1,41 @@
+<resources>
+    <style name="Theme.Marvel" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">@font/space_grotesk</item>
+        <item name="android:colorAccent">@color/archive_red</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowBackground">@color/archive_black</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/archive_black</item>
+    </style>
+    <style name="ArchiveTitle">
+        <item name="android:fontFamily">@font/bebas_neue</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@color/ink_black</item>
+    </style>
+    <style name="SectionTitle">
+        <item name="android:fontFamily">@font/oswald</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/ink_black</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+    <style name="BodyText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/ink_gray</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+    <style name="ArchiveButton" parent="android:style/Widget.Material.Button">
+        <item name="android:background">@drawable/button_red</item>
+        <item name="android:textColor">@color/warm_white</item>
+        <item name="android:fontFamily">@font/space_grotesk</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+</resources>

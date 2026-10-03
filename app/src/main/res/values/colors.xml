@@ -1,0 +1,14 @@
+<resources>
+    <color name="archive_black">#151719</color>
+    <color name="ink_black">#171715</color>
+    <color name="archive_red">#B62436</color>
+    <color name="deep_red">#7D1728</color>
+    <color name="paper_cream">#EFE4CE</color>
+    <color name="warm_white">#FFF8EA</color>
+    <color name="comic_yellow">#F2CE59</color>
+    <color name="archive_blue">#245D7B</color>
+    <color name="ink_gray">#383832</color>
+    <color name="muted_ink">#625D52</color>
+    <color name="paper_rule">#C4B79E</color>
+    <color name="stage_muted">#D0C5B1</color>
+</resources>

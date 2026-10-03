@@ -1,0 +1,98 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/paper_cream">
+    <ImageView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:src="@drawable/paper_texture" android:scaleType="centerCrop"
+        android:alpha="0.18" android:importantForAccessibility="no" />
+    <ScrollView android:id="@+id/page_scroll" android:layout_width="match_parent"
+        android:layout_height="match_parent" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_horizontal" android:orientation="vertical" android:padding="20dp">
+            <LinearLayout android:id="@+id/auth_content" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:orientation="vertical">
+                <Button android:id="@+id/auth_back" style="@style/ArchiveButton"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp" android:layout_marginBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground" android:minHeight="48dp"
+                    android:drawableStart="@drawable/ic_back" android:drawableTint="@color/ink_black"
+                    android:drawablePadding="8dp" android:paddingStart="0dp" android:paddingEnd="16dp"
+                    android:text="@string/back" android:textColor="@color/ink_black" android:textSize="16sp" />
+                <com.example.marvel.ui.CollageArtView android:layout_width="match_parent"
+                    android:layout_height="84dp" android:importantForAccessibility="no" />
+                <LinearLayout android:id="@+id/auth_form_panel"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:background="@color/warm_white" android:orientation="vertical" android:padding="20dp">
+                    <TextView android:id="@+id/auth_title" style="@style/ArchiveTitle"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:accessibilityHeading="true" android:textSize="40sp" />
+                    <TextView android:id="@+id/auth_copy" style="@style/BodyText"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" android:layout_marginBottom="20dp" />
+                    <TextView android:id="@+id/auth_name_label" style="@style/BodyText"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Agent name" android:labelFor="@+id/auth_name"
+                        android:layout_marginTop="12dp" android:layout_marginBottom="8dp" />
+                    <EditText android:id="@id/auth_name" android:tag="auth_name"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:minHeight="56dp" android:background="@drawable/field_background"
+                        android:textColor="@color/ink_black" android:textSize="16sp"
+                        android:singleLine="true" android:inputType="textPersonName" android:autofillHints="name"
+                        android:saveEnabled="false" android:imeOptions="actionNext" />
+                    <TextView android:id="@+id/auth_email_label" style="@style/BodyText"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Email address" android:labelFor="@+id/auth_email"
+                        android:layout_marginTop="12dp" android:layout_marginBottom="8dp" />
+                    <EditText android:id="@id/auth_email" android:tag="auth_email"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:minHeight="56dp" android:background="@drawable/field_background"
+                        android:textColor="@color/ink_black" android:textSize="16sp" android:singleLine="true"
+                        android:inputType="textEmailAddress" android:autofillHints="emailAddress"
+                        android:saveEnabled="false" android:imeOptions="actionNext" />
+                    <TextView android:id="@+id/auth_password_label" style="@style/BodyText"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Password" android:labelFor="@+id/auth_password"
+                        android:layout_marginTop="12dp" android:layout_marginBottom="8dp" />
+                    <EditText android:id="@id/auth_password" android:tag="auth_password"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:minHeight="56dp" android:background="@drawable/field_background"
+                        android:textColor="@color/ink_black" android:textSize="16sp" android:singleLine="true"
+                        android:inputType="textPassword" android:autofillHints="password"
+                        android:saveEnabled="false" android:imeOptions="actionNext" />
+                    <TextView android:id="@+id/auth_confirm_label" style="@style/BodyText"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Confirm password" android:labelFor="@+id/auth_confirm"
+                        android:layout_marginTop="12dp" android:layout_marginBottom="8dp" />
+                    <EditText android:id="@id/auth_confirm" android:tag="auth_confirm"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:minHeight="56dp" android:background="@drawable/field_background"
+                        android:textColor="@color/ink_black" android:textSize="16sp" android:singleLine="true"
+                        android:inputType="textPassword" android:autofillHints="newPassword"
+                        android:saveEnabled="false" android:imeOptions="actionNext" />
+                    <CheckBox android:id="@+id/auth_show_password"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:minHeight="48dp" android:layout_marginTop="8dp" android:text="Show passwords"
+                        android:textSize="16sp" android:textColor="@color/ink_black" android:buttonTint="@color/archive_red" />
+                    <TextView android:id="@+id/auth_feedback" style="@style/BodyText"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp" android:padding="16dp"
+                        android:background="@color/paper_cream" android:accessibilityLiveRegion="polite" />
+                    <ProgressBar android:id="@+id/auth_progress"
+                        android:layout_width="32dp" android:layout_height="32dp"
+                        android:layout_gravity="center_horizontal" android:layout_marginTop="12dp"
+                        android:indeterminateTint="@color/archive_red" android:contentDescription="Processing account request"
+                        android:visibility="gone" />
+                    <Button android:id="@+id/auth_submit" style="@style/ArchiveButton"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp" android:minHeight="56dp" android:textSize="16sp" />
+                    <Button android:id="@+id/auth_reset" style="@style/ArchiveButton"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground" android:minHeight="48dp"
+                        android:textColor="@color/deep_red" android:text="Forgot password?" android:textSize="16sp" />
+                    <Button android:id="@+id/auth_alternative" style="@style/ArchiveButton"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:background="@drawable/button_outline" android:minHeight="56dp"
+                        android:textColor="@color/ink_black" android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">S.H.I.E.L.D. Archives</string>
+    <string name="back">Back</string>
+    <string name="global_search">Search the archive</string>
+    <string name="search_hint">Search characters…</string>
+    <string name="search">Search</string>
+    <string name="retry">Retry</string>
+    <string name="google_sign_in">Continue with Google</string>
+    <string name="tagline">SEARCH. DISCOVER. RECRUIT.</string>
+    <string name="welcome_title">S.H.I.E.L.D.\nARCHIVES</string>
+    <string name="welcome_copy">Explore the archive.\nBuild your team.</string>
+    <string name="privacy_note">Your account identifies your private archive. Favorites, teams and missions are saved with Firebase. Comic data by Comic Vine.</string>
+    <string name="image_placeholder">Image unavailable</string>
+    <string name="clear_search">Clear search</string>
+    <string name="selected_member">Selected · Tap to remove</string>
+    <string name="start_mission">Start a Mission</string>
+    <string name="input_hint">Enter a value</string>
+</resources>

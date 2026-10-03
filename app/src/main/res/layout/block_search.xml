@@ -1,0 +1,4 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+    <EditText android:importantForAutofill="no" android:id="@+id/query" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:minHeight="56dp" android:background="@drawable/field_background" android:textColor="@color/ink_black" android:textColorHint="@color/muted_ink" android:textSize="16sp" android:singleLine="true" android:imeOptions="actionSearch" android:inputType="text" android:hint="@string/search_hint"/>
+    <ImageButton android:id="@+id/clear_query" android:layout_width="48dp" android:layout_height="48dp" android:src="@drawable/ic_close" android:background="?android:attr/selectableItemBackgroundBorderless" android:contentDescription="@string/clear_search"/>
+</LinearLayout>

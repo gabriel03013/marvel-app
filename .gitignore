@@ -1,0 +1,18 @@
+.gradle/
+build/
+**/build/
+local.properties
+*.jks
+*.keystore
+.impeccable/review/
+
+*-debug.log
+
+# Local tooling and account configuration
+.idea/
+.kotlin/
+app/google-services.json
+
+# Generated verification output
+artifacts/
+firepit-log.txt

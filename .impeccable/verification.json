@@ -1,0 +1,18 @@
+{
+  "platform": "Android native XML + Kotlin",
+  "build": true,
+  "lint_errors": 0,
+  "integration": {
+    "full_flow": true,
+    "tablet": true,
+    "font_scale_1_3": true,
+    "fix_phone": true,
+    "fix_font_scale_1_3": true,
+    "fix_tablet": true
+  },
+  "data": "Real Comic Vine; isolated local Firebase emulators",
+  "review": "ship; both bounded corrections resolved",
+  "production_google_sign_in": "Not verified with an account-bearing device and registered signing certificate",
+  "screenshots": 49,
+  "apk": "artifacts/shield-archives-debug.apk"
+}

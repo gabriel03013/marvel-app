@@ -1,0 +1,8 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/state_skeleton" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="16dp" android:visibility="gone" android:importantForAccessibility="noHideDescendants">
+    <View android:layout_width="56dp" android:layout_height="72dp" android:background="@color/paper_rule" android:alpha="0.5"/>
+    <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="72dp" android:orientation="vertical" android:gravity="center_vertical" android:paddingStart="16dp">
+        <View android:layout_width="match_parent" android:layout_height="12dp" android:background="@color/paper_rule" android:alpha="0.5"/>
+        <View android:layout_width="match_parent" android:layout_height="8dp" android:layout_marginTop="12dp" android:background="@color/paper_rule" android:alpha="0.3"/>
+        <View android:layout_width="match_parent" android:layout_height="8dp" android:layout_marginTop="8dp" android:background="@color/paper_rule" android:alpha="0.3"/>
+    </LinearLayout>
+</LinearLayout>
