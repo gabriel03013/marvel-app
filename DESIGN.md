@@ -1,100 +1,337 @@
-# S.H.I.E.L.D. Archives — Comic Paste-up
+---
+name: S.H.I.E.L.D. Archives
+description: 'Cut, Collect, Recruit: a native comic paper archive.'
+colors:
+  carbon-ink: '#171819'
+  action-vermilion: '#C93422'
+  deep-vermilion: '#8C241A'
+  reading-paper: '#F7F2E6'
+  warm-white: '#FFFCF5'
+  progress-yellow: '#EFD76E'
+  archive-cobalt: '#274AC4'
+  body-ink: '#343431'
+  muted-ink: '#625F57'
+  paper-rule: '#D4CBBA'
+  chip-outline: '#8E887C'
+typography:
+  display:
+    fontFamily: Bebas Neue
+    fontSize: 48sp
+    fontWeight: 400
+  form-title:
+    fontFamily: Bebas Neue
+    fontSize: 44sp
+    fontWeight: 400
+  compact-title:
+    fontFamily: Bebas Neue
+    fontSize: 36sp
+    fontWeight: 400
+  record-title:
+    fontFamily: Oswald
+    fontSize: 24sp
+    fontWeight: 400
+  action-title:
+    fontFamily: Oswald
+    fontSize: 22sp
+    fontWeight: 400
+  category-title:
+    fontFamily: Oswald
+    fontSize: 28sp
+    fontWeight: 400
+  body:
+    fontFamily: Space Grotesk
+    fontSize: 16sp
+    fontWeight: 300
+  secondary:
+    fontFamily: Space Grotesk
+    fontSize: 14sp
+    fontWeight: 300
+  note:
+    fontFamily: Space Grotesk
+    fontSize: 13sp
+    fontWeight: 300
+  navigation:
+    fontFamily: Barlow Condensed
+    fontSize: 12sp
+    fontWeight: 700
+  top-bar:
+    fontFamily: Barlow Condensed
+    fontSize: 22sp
+    fontWeight: 700
+  evaluation:
+    fontFamily: Bebas Neue
+    fontSize: 64sp
+    fontWeight: 400
+rounded:
+  selection: 4dp
+  control: 8dp
+  paper-image: 12dp
+  chip: 24dp
+spacing:
+  space-4: 4dp
+  space-6: 6dp
+  space-8: 8dp
+  space-10: 10dp
+  space-12: 12dp
+  space-16: 16dp
+  space-18: 18dp
+  space-20: 20dp
+  space-24: 24dp
+components:
+  button-primary:
+    backgroundColor: '{colors.action-vermilion}'
+    textColor: '{colors.warm-white}'
+    typography: '{typography.body}'
+    rounded: '{rounded.control}'
+    padding: 8dp 20dp
+    width: match_parent
+  button-outline:
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.body}'
+    rounded: '{rounded.control}'
+    padding: 8dp 20dp
+    width: match_parent
+  button-text:
+    textColor: '{colors.action-vermilion}'
+    typography: '{typography.body}'
+  field:
+    backgroundColor: '{colors.warm-white}'
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.body}'
+    rounded: '{rounded.control}'
+    padding: 12dp 16dp
+  chip:
+    backgroundColor: '{colors.warm-white}'
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.secondary}'
+    rounded: '{rounded.chip}'
+    padding: 10dp 18dp
+  chip-selected:
+    backgroundColor: '{colors.progress-yellow}'
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.secondary}'
+    rounded: '{rounded.chip}'
+    padding: 10dp 18dp
+  navigation-bar:
+    backgroundColor: '{colors.carbon-ink}'
+    textColor: '{colors.reading-paper}'
+    typography: '{typography.navigation}'
+  navigation-selected:
+    backgroundColor: '{colors.action-vermilion}'
+    textColor: '{colors.reading-paper}'
+    typography: '{typography.navigation}'
+    rounded: '{rounded.control}'
+    padding: 8dp 0dp
+  paper-surface:
+    backgroundColor: '{colors.warm-white}'
+    rounded: '{rounded.control}'
+  mission-cover:
+    backgroundColor: '{colors.warm-white}'
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.compact-title}'
+    padding: '{spacing.space-20}'
+    width: match_parent
+  record-row:
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.record-title}'
+    padding: 12dp 0dp
+    width: match_parent
+  record-row-selected:
+    backgroundColor: '{colors.warm-white}'
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.record-title}'
+    padding: 12dp 8dp
+    width: match_parent
+  native-title:
+    textColor: '{colors.carbon-ink}'
+    typography: '{typography.display}'
+---
 
-## Direction
+# Design System: S.H.I.E.L.D. Archives
 
-A living comic archive, assembled by hand. Every screen belongs to a comic zine made of clipped panels, cream stock, scarlet paper, tape, registration marks and printed halftone. The user explicitly wants **intense collage throughout the app**. Decoration is visible on every surface; opaque paper protects reading and controls stay aligned.
+## Overview
 
-Preserve Search. Discover. Recruit, real Comic Vine records and images, Firebase authentication and persistence, English copy, Android Back and honest app-generated evaluations. Retain the existing Kotlin and native XML implementation.
+**Creative North Star: "Cut, Collect, Recruit"**
 
-## Materials and composition
+Cut, Collect, Recruit is a usable comic fanzine: condensed ink headlines, original torn illustrations, vermilion actions and cobalt annotations on warm reading paper. Collage is present throughout the app, while opaque reading surfaces keep records, forms and controls clear.
 
-- Ink is the stage; paper is the reading surface. Welcome, Home and mission flow use charcoal archive stages. Search, archives, collection and account pages use warm paper stock.
-- An editorial title slab, visible asset composition and torn paper edges identify each page. Different functions need different composition, rather than the same stack of outlined buttons.
-- Character images are real API photographs in paper frames. Tape and registration details stay at the perimeter, away from faces and factual text.
-- Result rows are cream slips with image, headline, metadata and optional summary. Selection adds the visible Selected label and an outline.
-- Categories are folder covers, teams are report slips, missions have a dominant briefing and action strip.
-- Rotate decoration by at most 6 degrees. Never rotate controls, text, result lists or touch targets.
-- Use original transparent atlases at draw time: select individual scraps, tape and bursts. Never display a whole sprite sheet as a card.
-- No official Marvel wordmark or promotional art as created branding.
+The material comes from three original PNG cutouts with real alpha. Comic Vine imagery identifies characters and archive records; generated illustration decorates the archive. All titles, labels and product copy remain live English native text. The launcher carries an original open-book mark with a bookmark and cobalt annotation.
 
-## Color roles
+**Key Characteristics:**
 
-| Android token | Value | Role |
-|---|---|---|
-| archive_black | #151719 | Stage and navigation |
-| ink_black | #171715 | Primary ink on paper |
-| archive_red | #B62436 | Primary action, warm-white text |
-| deep_red | #7D1728 | Red annotations |
-| paper_cream | #EFE4CE | Paper page stock |
-| warm_white | #FFF8EA | Opaque reading/form surfaces |
-| comic_yellow | #F2CE59 | Mission paper, active navigation, dark ink |
-| archive_blue | #245D7B | Reference paper and metadata |
-| ink_gray | #383832 | Body ink |
-| muted_ink | #625D52 | Quiet metadata/placeholders |
-| paper_rule | #C4B79E | Rules and outlines |
-| stage_muted | #D0C5B1 | Supporting ink on dark ground |
+- Intense original comic collage with proportional cutouts.
+- Condensed native headlines beside readable record imagery.
+- Quiet opaque paper for reading, forms and reports.
+- Vermilion actions, cobalt metadata and explicit selected states.
+- Native Android navigation, reflow and recoverable data states.
 
-Color never carries state alone. Body/placeholder contrast >=4.5:1, large type >=3:1. Texture fades or stops before reading. Keep the authored paper-and-ink palette independent of wallpaper and do not invert cream raster images in night mode.
+The YAML frontmatter is normative. Measurements use Android `dp` and `sp`; width values preserve native layout semantics. The [JSON sidecar](/home/gabriel/Documents/codes/marvel/.impeccable/design.json) records Android-only geometry, state behavior, accessibility, motion and source provenance.
+
+## Colors
+
+Warm paper and carbon ink carry the reading surface; vermilion, cobalt and yellow give actions and annotations distinct roles.
+
+### Primary
+
+- **Action Vermilion** (`action-vermilion`): filled primary actions, selected navigation, field focus, selection outlines and account text actions.
+- **Deep Vermilion** (`deep-vermilion`): error feedback, selected-record copy and the dismissible message strip.
+
+### Secondary
+
+- **Archive Cobalt** (`archive-cobalt`): provider metadata, selected archive category accents and the launcher annotation.
+
+### Tertiary
+
+- **Progress Yellow** (`progress-yellow`): checked chips and the current recruitment step.
+
+### Neutral
+
+- **Carbon Ink** (`carbon-ink`): headlines, primary record text, system navigation ground and launcher background. The native `archive_black` and `ink_black` resources share this value.
+- **Reading Paper** (`reading-paper`): the full-page ground and navigation labels.
+- **Warm White** (`warm-white`): forms, fields, mission covers, state panels and primary-action text.
+- **Body Ink** (`body-ink`): long reading copy and result decks.
+- **Muted Ink** (`muted-ink`): field hints, notes, secondary copy and default field outlines.
+- **Paper Rule** (`paper-rule`): quiet button borders, disabled field outlines, image backing and skeleton blocks. The `stage_muted` resource is an alias.
+- **Chip Outline** (`chip-outline`): the unselected chip's thin outline.
+
+**The Paper Ground Rule.** Keep record copy and controls on opaque paper; use collage as a proportional illustration beside or above the task.
+
+The light paper palette stays stable in night mode. Source: [colors.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml), [themes.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml), and [chip_background.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/chip_background.xml).
 
 ## Typography
 
-Bundled licensed fonts only. Bebas Neue is the cover voice, Oswald names sections and records, Space Grotesk carries reading/actions. Barlow Condensed is reserved for compact wordmarks/navigation.
+**Display Font:** Bebas Neue, bundled Regular face.
+**Record / Section Font:** Oswald, bundled variable Regular default.
+**Body Font:** Space Grotesk, bundled variable Light default inherited by the theme.
+**Navigation Font:** Barlow Condensed, bundled Bold face.
 
-| Role | Size | Face |
-|---|---|---|
-| Cover | 48sp | Bebas Neue |
-| Page headline | 40sp | Bebas Neue |
-| Section / record | 22–24sp | Oswald |
-| Body / field / action | 16sp, 4dp extra leading | Space Grotesk |
-| Metadata | 13–14sp, 3dp extra leading | Space Grotesk |
-| Navigation | 12sp, wraps if needed | Barlow Condensed |
+Compressed headlines give the archive its comic-cover voice. Record and section titles stay narrower than body copy, allowing real names and descriptions to wrap naturally.
 
-No arbitrary technical eyebrows, fake dossier IDs or invented statistics. Sequence numbers are allowed when they show real mission progress. Titles normally take two or three lines; long API names wrap fully. Essential copy uses sp, wrap_content and minimum heights, also at font scale 1.3.
+### Hierarchy
 
-## Geometry
+| Token | Use |
+| --- | --- |
+| `display` | Standard page titles, Welcome and Splash lettering. |
+| `form-title` | Account-form titles beside a small collage cutout. |
+| `compact-title` | Compact detail, list, selection and submitted-search headers; mission cover titles. |
+| `record-title` | Character names, sections and Welcome supporting title. |
+| `action-title` | Reusable action-row titles. |
+| `category-title` | Archive category actions. |
+| `body` | Reading copy, field text, button labels and data values. |
+| `secondary` | Record metadata, excerpts, data labels, chips and progress steps. |
+| `note` | Evidence notes and profile email. |
+| `navigation` | Main destination labels. |
+| `top-bar` | The persistent archive or report label. |
+| `evaluation` | The explicitly app-generated report score. |
 
-4dp grid: 8, 12, 16, 20, 24, 32, 40. Phone gutter 20dp. Expanded reading width up to 640dp; auth width up to 520dp. Sections have 28–32dp above and 12dp below; related copy 8–12dp; rows 12dp apart.
+Weights in the frontmatter describe the bundled font defaults where the app does not request a different style. Space Grotesk defaults to Light; Barlow Condensed is a Bold file. Oswald and Space Grotesk have weight axes, but the UI declares no `fontVariationSettings`. The profile name requests native `textStyle="bold"`; the sidecar preserves that request without treating it as a separate custom font face.
 
-Targets >=48dp; primary buttons >=56dp. Paper has torn contours; controls have 8dp radius, visible focus and ripple. Layering comes from overlapping real scraps and different stocks, with no hard block shadows. Five labeled bottom destinations on phones; existing rail from 600dp. Filled selection indicator and accessibility selection state. Respect status, cutout, navigation and keyboard insets. Every page and form scrolls.
+Body text adds (4dp) line spacing. Notes, excerpts and data rows add (3dp); record metadata and Welcome supporting copy add (2dp). The app specifies extra native spacing rather than a fixed line height. Most text retains Android font padding; the Welcome wordmark/title/supporting title and auth title explicitly remove it. No custom letter spacing is declared.
+
+**The Live Lettering Rule.** Keep titles, labels, facts and actions as native text. Artwork carries no interface copy.
+
+Sources: [themes.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml), [font resources](/home/gabriel/Documents/codes/marvel/app/src/main/res/font), [row_character.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml), and the native font metadata recorded in the sidecar.
+
+## Layout
+
+Pages are vertical native scroll layouts with the `space-20` gutter. Content uses wrap-content heights, so headings, body copy and actions can reflow with font scale. Standard section titles declare (24dp) top and (10dp) bottom margins; component-specific spacing is retained rather than forced into a new universal grid.
+
+At a screen width of (600dp), primary navigation becomes a left rail (104dp). The normal page container is centered and bounded to (640dp), including its padding, or the available width after the rail. Welcome uses a centered (520dp) content column at that threshold. Account content is always bounded to `min(520dp, screenWidthDp − 40dp)` inside the padded scroll layout. These are native width rules, not CSS breakpoints.
+
+The top bar has a (56dp) minimum height and (48dp) Back/search actions. Bottom destination items have a (64dp) minimum height, equally weighted phone widths, (24dp) icons and native ripple feedback. Public authentication screens show their own cover or Back action; authenticated secondary screens keep Android Back and the shared bar.
+
+Standard title art occupies (112dp × 112dp). Compact titles use (88dp × 80dp) art and the `compact-title` type token. The Welcome hero is (230dp) tall; mission-cover art is (176dp) tall; briefing art is (156dp) tall. Each image is fit proportionally rather than stretched. Compact headers apply to image, detail, archive list, related records, selection, global search and submitted Search.
+
+System bars, display cutouts and the keyboard feed the root inset padding. Root bottom padding uses the larger of the system-bar and keyboard insets. Same-screen updates preserve scroll, focused field and cursor; route changes place focus on the screen host.
+
+Sources: [screen_page.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_page.xml), [activity_main.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/activity_main.xml), [tablet shell](/home/gabriel/Documents/codes/marvel/app/src/main/res/layout-w600dp/activity_main.xml), [ScreenRenderer.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt), [AuthScreens.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/AuthScreens.kt), and [MainActivity.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt).
+
+## Elevation & Depth
+
+Paper depth is printed into the overlapping original art. Reading panels are opaque native fills with no app-defined drop-shadow vocabulary. Buttons inherit Android `Widget.Material.Button` elevation and its state animator; the app does not replace those defaults with a custom shadow token. Ripple feedback is native: primary buttons declare translucent white, outline buttons translucent dark ink, and rows/navigation use the platform selectable-item foreground.
+
+**The Material Depth Rule.** Let overlapping artwork provide the paper depth. Keep reading containers flat and retain native widget feedback.
+
+A changed route receives one (180ms) opacity reveal from (0.88) to (1), using native `DecelerateInterpolator`. It runs only when `ValueAnimator.areAnimatorsEnabled()` is true. Same-screen data updates do not replay it. Loading skeletons are static; progress indicators use native indeterminate behavior. No continuous collage animation is declared.
+
+Sources: [CollageArtView.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/CollageArtView.kt), [button_red.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/button_red.xml), [button_outline.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/button_outline.xml), and [MainActivity.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt).
+
+## Shapes
+
+Controls, current navigation backgrounds and Kotlin reading surfaces use the `control` radius. Chips use the larger `chip` radius. Comparison image paper uses `paper-image`. A selected record layers a `selection`-radius outline over the `control`-radius paper surface; preserve both native layers rather than inventing a unified card shape.
+
+Default field outlines and quiet button borders are (1dp). Focused fields and selected records use a (2dp) vermilion outline. Native controls and text are not rotated. Organic edges belong to the original transparent illustrations and label asset.
+
+The launcher is an original open-book silhouette on carbon ink, with a vermilion bookmark and cobalt annotation. Adaptive and round variants share the native foreground/background; monochrome retains the book silhouette. Legacy launcher resources resolve to the same artwork layers.
+
+Sources: [field_background.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/field_background.xml), [card_paper.xml](/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/card_paper.xml), [ScreenRenderer.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt), and [launcher foreground](/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_foreground.xml).
 
 ## Components
 
-CollageArtView draws cached original assets. CollageSurface supplies title paper, state slips, rows and framed images. XML owns structure; ScreenRenderer binds data/actions. Reuse title panels, taped section headings, dossier rows, category covers, report slips, labeled data pairs, real progress strips, image frames and state panels. Secondary links are quiet ink/paper rows, primary actions filled red. Dense related records remain skimmable.
+### Buttons
 
-## Screen contract
+Confident native actions with readable, mixed-case labels. Primary and outline buttons share the frontmatter's geometry and a (56dp) minimum height; their height wraps content. The outline variant has a transparent fill and paper-rule border. Account text actions use a native selectable background and (48dp) minimum height. Back uses ink text, its native arrow and a narrower content-width layout.
 
-| Surface | Composition and action |
-|---|---|
-| Splash | Own wordmark, central comic collage, honest restoring indicator |
-| Welcome / Google | Comic cover with scarlet title strip, cream Archives lettering, scraps and burst; Google then email then signup |
-| Email / signup / reset | Paper form on collage stock; compact cover, opaque labeled fields, visible feedback and Back |
-| First run / Profile | Agent identity slip with photo/data, grouped saved counts; enter archive or settings |
-| Home | Greeting, identity strip, featured mission cover, paired discovery actions, real recent/favorite records and last saved report |
-| Search / global search | Blue-and-cream editorial title, large query/action, recent/suggested slips; actual results dominate after search |
-| Detail | Name and framed API image, identity metadata, primary Recruit; overview and related readable dossier sections |
-| Image | Quiet ink frame, full uncropped real image and attribution |
-| Recruit | Distinct mission covers; continue an existing roster above choices |
-| Briefing | Mission title, actual step strip, objective paper and suggested abilities; Begin Recruitment |
-| Picker | Roster/capacity and labeled selected slips, search/favorites; Continue to Assembly |
-| Assembly | Named roster and removal controls, visible criteria; Generate Report |
-| Report / saved | Team identity, printed score sheet explicitly labeled app evaluation, evidence/member dossiers; Save or Share |
-| Archives | Folder covers for real API categories, then comparison/timeline tools; no made-up counts |
-| Lists / related | Compact category title, query where applicable, states and paginated slips |
-| Compare / result | Two labeled identity columns and consistently grouped facts; unknown stays unknown |
-| Timeline | Dated issue sections, first-appearance marker, expandable summaries; undated relations separate |
-| Collection and subtabs | Scrollable labeled tabs, real count and record/report slips; empty actions lead to Search or Recruit |
-| Settings | Quiet paper document with readable account, language, attribution and privacy |
+Shared generated buttons lower alpha to (0.55) when disabled. Auth buttons disable while busy and show `Please wait…`; their opacity is inherited from the native widget rather than the shared helper. Platform ripple, focus and disabled feedback remain native. Do not add web hover variants.
 
-## States and accessibility
+### Inputs / Fields
 
-Loading has labeled progress and dossier skeletons. Empty has a comic mark, explanation and useful next action. Error has opaque paper, clear recovery and Retry; existing data remains visible during partial failure. Missing image uses our dossier icon with an honest description. Decorative assets are excluded from accessibility. Missing facts say Not documented; no inferred alignment or official-looking strength statistics. Selection/disabled states and keyboard focus remain clear. Long names/columns wrap, cache/offline notices stay honest, auth retries retain input.
+Quiet warm-white fields carry ink text and muted hints, visible native labels, the declared padding and a (56dp) minimum height. The focused outline thickens and turns vermilion. Disabled fields switch to reading paper with a paper-rule outline. Search pairs a weighted field with a (48dp) Clear action, accepts the Search IME action and exposes a separate primary Search button.
 
-## Motion and verification
+Auth fields use appropriate email/password/name input types, labels linked with `labelFor`, native autofill hints and a (48dp) Show passwords checkbox. Busy state disables the form. Auth feedback is a polite live region on paper with deep-vermilion errors. Input and visibility state are retained in memory during retry/rotation; successful auth or leaving the form clears passwords. Multiline mission briefing has a three-line minimum.
 
-Signature: a paper cover settles on route change in 180ms, with no replay on data updates. Use native ripple for selection. Respect ValueAnimator.areAnimatorsEnabled and transition instantly under Remove animations. No continuous background movement, marquee, hover or JavaScript libraries.
+### Chips
 
-Review each route with a background design agent, then combine material corrections. Native screenshots must come from the installed app, not web mockups or old captures. Verify phone, expanded widths and font scale 1.3 when available. Run assemble, relevant tests and lint; report unavailable checks.
+Native RadioButtons present filter and collection choices. Unselected chips use warm white and the chip outline; checked chips use progress yellow. They have a (48dp) minimum height, horizontal scroll when needed and (8dp) trailing spacing. Disabled choices use (0.55) alpha and an explicit unavailable accessibility description. Selection is a native checked state, with readable content descriptions. After layout, the chip strip centers the selected choice when space allows and clamps to its valid scroll range, keeping the active tab visible on entry and rerender.
 
-## Skills synthesis
+### Navigation
 
-Impeccable supplies native craft and bounded critique. GPT Taste supplies editorial composition, varied scale and purposeful movement adapted to Android. Mobile UI and mobile-design supply touch, keyboard, navigation and user-state principles. Style skills contribute magazine, zine, image-collection and canvas lessons without replacing the brand. Full review: artifacts/design/skill-review.md.
+The charcoal navigation ground carries paper labels and icons. A vermilion rounded item marks the active destination; native `isSelected` and the spoken `selected` suffix repeat the visual state. Decorative icons are excluded from duplicate accessibility announcements. Phone navigation distributes five destinations horizontally; the width-qualified shell places them in the left rail. Contextual routes retain their parent destination's selection.
+
+### Cards / Containers
+
+Paper panels use an opaque fill. Mission covers are editorial: original cosmic art, a condensed title, live objective, and a distinct vermilion action. Other missions and saved teams use the quieter reusable action row with an arrow and supporting text. Action rows have a (64dp) minimum height and wrap their copy.
+
+Record rows put a (96dp × 128dp) provider image beside the record title, true metadata and an optional three-line excerpt. Images use `centerCrop`; detail and comparison images use `centerInside`. A selected row shows a vermilion outline and readable removal/confirmation label. Labels and provider names wrap; only the intentional excerpt is ellipsized.
+
+### Native Title / Collage
+
+Every main page title pairs live ink lettering with proportional original art. `CollageArtView` uses `FIT_CENTER` and excludes decorative artwork from accessibility. Welcome overlays a live wordmark on the original label image (200dp × 67dp); auth titles pair with a (112dp × 96dp) decorative cutout. The three shipping PNGs preserve alpha and embedded generation provenance. See [asset-provenance.json](/home/gabriel/Documents/codes/marvel/artifacts/design/rebuild/asset-provenance.json).
+
+### Dossier / Report Data
+
+Data rows align label and value using native layout weights (0.42 / 0.58), with wrap-content heights and `Not documented` for blank values. Report scores carry the visible `App-generated evaluation` label; suggested roles carry `app inference`. Recruitment uses three equal-width native progress labels, with yellow for the current step and a spoken step/current-state description.
+
+The shared `hasRecruitmentDraft` guard includes a roster, a nonblank team name, or a nonblank custom mission objective. Home and Recruit expose the resumable draft. Choosing another mission asks `Replace your active team?` with `Keep current team` and `Start new mission`; confirmed replacement clears the roster, team name, custom objective and report.
+
+### Loading / Empty / Error
+
+Remote records use a shared paper state panel with a decorative art fragment, live heading/copy, native spinner, static skeleton and an optional Retry action. Existing rows remain visible during loading or partial failure. Empty guidance reflects the filter that actually ran: Marvel-specific recovery applies only to filtered non-selection character results; selectors and other archives use generic available recovery. Pagination shows a disabled loading action while another page is pending. Timeline refresh retains previous dated records and discloses any reused records when individual requests fail. Related lists retain their own heading, records and pagination position through nested Android Back and Activity recreation.
+
+Collection states distinguish loading, sync interruption, pending local changes and cached data. Cached or failed retrieval is not presented as a confirmed empty collection or fresh count. Dismissible global messages are polite live regions and remain visible for (5000ms) unless dismissed first.
+
+All remote images start with the dossier placeholder. A blank URL is missing; a failed request adds `Image unavailable` to the image's description. The full-image viewer separately shows visible `Loading image…`, missing-image copy or connection-error copy, and exposes `Retry image` only on failure. Success hides status and Retry and retains the uncropped provider image in a (420dp) frame; other large record frames are (280dp). List/detail image slots keep the placeholder and accessible failure description; they do not expose an individual image-retry button.
+
+Sources: [ScreenRenderer.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt), [DiscoveryScreens.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/DiscoveryScreens.kt), [MissionScreens.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/MissionScreens.kt), [ArchiveViewModel.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveViewModel.kt), and [ArchiveImages.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveImages.kt).
+
+## Do's and Don'ts
+
+### Do:
+
+- **Do** fit original collage proportionally and preserve its alpha.
+- **Do** place Comic Vine images and facts at the center of record content.
+- **Do** use the declared native dp/sp tokens and allow text and controls to grow.
+- **Do** retain cache and partial results while showing clear sync, error and retry copy.
+- **Do** show selection through readable labels, native selected state and the established outline.
+- **Do** use the shared recruitment draft guard before replacing a mission.
+- **Do** label evaluations and suggested roles as app-generated.
+
+### Don't:
+
+- **Don't** put generated illustration in place of a provider character image or fabricate archive facts.
+- **Don't** use official Marvel logos as created branding.
+- **Don't** stretch paper scraps, paint text into raster art or add checkerboard backings.
+- **Don't** rotate native text, controls or touch targets.
+- **Don't** cover reading areas with texture or turn every result into a decorated tile.
+- **Don't** add continuous animation, web hover states or a synthetic CSS shadow system.
+- **Don't** present cached counts as confirmed fresh data or app evaluations as official statistics.

@@ -83,9 +83,9 @@ class MainActivity : ComponentActivity() {
         val content = page.findViewById<LinearLayout>(R.id.page_content)
         content.gravity = android.view.Gravity.CENTER_VERTICAL
         val cover = layoutInflater.inflate(R.layout.block_cover, content, false)
-        cover.background = com.example.marvel.ui.CollageSurface(this, "red", 1)
+        cover.background = null
         cover.findViewById<TextView>(R.id.cover_title).apply {
-            text = "S.H.I.E.L.D.\nArchives"; setTextColor(getColor(R.color.warm_white)); isAccessibilityHeading = true
+            text = "S.H.I.E.L.D.\nArchives"; setTextColor(getColor(R.color.ink_black)); isAccessibilityHeading = true
         }
         content.addView(cover)
         val state = layoutInflater.inflate(R.layout.block_state, content, false)

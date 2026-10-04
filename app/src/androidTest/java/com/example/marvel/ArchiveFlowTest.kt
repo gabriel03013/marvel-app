@@ -28,7 +28,7 @@ class ArchiveFlowTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         Thread.sleep(700)
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val folder = File(context.getExternalFilesDir(null), "review").apply { mkdirs() }
+        val folder = File(context.filesDir, "review").apply { mkdirs() }
         val bitmap = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
         File(folder, "${name.removeSuffix("-phone")}-${InstrumentationRegistry.getArguments().getString("captureClass", "phone")}.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
     }

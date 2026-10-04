@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginBottom="16dp">
-    <com.example.marvel.ui.CollageArtView android:id="@+id/cover_art" android:layout_width="match_parent" android:layout_height="88dp" android:importantForAccessibility="no"/>
-    <TextView android:id="@+id/cover_title" style="@style/ArchiveTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingHorizontal="16dp" android:paddingTop="12dp" android:paddingBottom="20dp"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+<TextView android:id="@+id/cover_title" style="@style/ArchiveTitle" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:paddingEnd="8dp"/>
+<com.example.marvel.ui.CollageArtView android:id="@+id/cover_art" android:layout_width="112dp" android:layout_height="112dp" android:importantForAccessibility="no"/>
 </LinearLayout>

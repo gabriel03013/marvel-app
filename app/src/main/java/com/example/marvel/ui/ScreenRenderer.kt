@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.core.view.doOnLayout
 import androidx.core.widget.doAfterTextChanged
 import com.example.marvel.MainActivity
 import com.example.marvel.R
@@ -29,8 +30,8 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
         host.removeAllViews()
         if (vm.route.screen in listOf("welcome", "sign-in")) { welcome(host); return }
         if (vm.route.screen in listOf("email-sign-in", "sign-up", "password-reset")) { emailAuth(host); return }
-        dark = vm.route.screen in listOf("home", "recruit", "briefing", "assembly", "report", "saved-team", "splash", "image")
-        val page = activity.layoutInflater.inflate(if (dark) R.layout.screen_dark else R.layout.screen_page, host, false)
+        dark = false
+        val page = activity.layoutInflater.inflate(R.layout.screen_page, host, false)
         content = page.findViewById(R.id.page_content); host.addView(page)
         if(activity.resources.configuration.screenWidthDp >= 600) {
             content.layoutParams = FrameLayout.LayoutParams(dp(640).coerceAtMost(dp(activity.resources.configuration.screenWidthDp - 104)), ViewGroup.LayoutParams.WRAP_CONTENT).apply { gravity = android.view.Gravity.CENTER_HORIZONTAL }
@@ -61,18 +62,20 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     fun renderNavigation(nav: LinearLayout) {
         nav.removeAllViews()
         val tabs = listOf(Triple("home", "Home", R.drawable.ic_home), Triple("search", "Search", R.drawable.ic_search), Triple("recruit", "Recruit", R.drawable.ic_recruit), Triple("archives", "Archives", R.drawable.ic_archives), Triple("collection", "Collection", R.drawable.ic_collection))
-        val active = when(vm.route.screen) {
+        fun destination(route: Route): String? = when(route.screen) {
+            "home", "search", "recruit", "archives", "collection" -> route.screen
             "briefing", "picker", "assembly", "report" -> "recruit"
-            "archive-list", "detail" -> if(vm.route.kind == "character") "search" else "archives"
+            "archive-list", "detail", "image" -> if(route.kind == "character") "search" else "archives"
             "saved-team", "favorites", "saved-teams", "mission-history", "recent" -> "collection"
-            else -> vm.route.screen
+            else -> null
         }
+        val active = vm.stack.asReversed().firstNotNullOfOrNull(::destination) ?: "home"
         val expanded = activity.resources.configuration.screenWidthDp >= 600
         nav.orientation = if(expanded) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
         for((route, label, icon) in tabs) {
             val item = activity.layoutInflater.inflate(R.layout.nav_item, nav, false)
             if(expanded) item.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            val color = color(if(route == active) R.color.ink_black else R.color.paper_cream)
+            val color = color(R.color.paper_cream)
             if(route == active) item.setBackgroundResource(R.drawable.nav_selected)
             item.findViewById<ImageView>(R.id.nav_icon).apply { setImageResource(icon); imageTintList = ColorStateList.valueOf(color) }
             item.findViewById<TextView>(R.id.nav_label).apply { text = label; setTextColor(color) }
@@ -83,7 +86,6 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     }
     private fun welcome(host: FrameLayout) {
         val view = activity.layoutInflater.inflate(R.layout.screen_welcome, host, false); host.addView(view)
-        view.findViewById<View>(R.id.welcome_actions)?.background = CollageSurface(activity, "paper", 1)
         if(activity.resources.configuration.screenWidthDp >= 600) {
             view.findViewById<LinearLayout>(R.id.welcome_content)?.layoutParams = LinearLayout.LayoutParams(dp(520), ViewGroup.LayoutParams.WRAP_CONTENT).apply { gravity = android.view.Gravity.CENTER_HORIZONTAL }
         }
@@ -110,25 +112,29 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     }
     fun title(value: String): TextView {
         val panel = block<LinearLayout>(R.layout.block_cover)
-        val blue = vm.route.screen in listOf("search", "global-search", "archives", "archive-list", "compare", "compare-result", "timeline")
         val compact = vm.route.screen in listOf("global-search", "detail", "image", "archive-list", "related", "picker", "character-select") || (vm.route.screen == "search" && vm.submittedQueries["search"] != null)
         panel.findViewById<CollageArtView>(R.id.cover_art).apply {
-            variant = when { blue -> 1; vm.route.screen in listOf("recruit", "briefing", "assembly", "report", "saved-team") -> 2; else -> 0 }
-            layoutParams.height = dp(if(vm.route.screen == "splash") 160 else if(compact) 40 else 88)
+            variant = if(vm.route.screen in listOf("recruit", "briefing", "assembly", "report", "saved-team", "archives")) 2 else 0
+            layoutParams.height = dp(if(compact) 80 else 112)
+            layoutParams.width = dp(if(compact) 88 else 112)
         }
         if(vm.route.screen == "splash") content.gravity = android.view.Gravity.CENTER_VERTICAL
         return panel.findViewById<TextView>(R.id.cover_title).apply {
             text = value
-            if(compact) textSize = 32f
+            if(compact) textSize = 36f
             if(vm.route.screen == "splash") { textSize = 48f; gravity = android.view.Gravity.CENTER }
-            background = CollageSurface(activity, if(blue) "blue" else if(dark) "red" else "paper", 1)
-            setTextColor(color(if(blue || dark) R.color.warm_white else R.color.ink_black))
+            setTextColor(color(R.color.ink_black))
             isAccessibilityHeading = true
         }
     }
+    fun heroArtwork(kind: String = "heroes", height: Int = 180) {
+        content.addView(CollageArtView(activity).apply {
+            variant = if(kind == "cosmic") 2 else 0
+            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(height)).apply { bottomMargin = dp(16) }
+        })
+    }
     fun section(value: String) = block<TextView>(R.layout.block_section).apply {
-        text = value; setTextColor(color(R.color.ink_black)); background = CollageSurface(activity, "paper", 1)
-        setPadding(dp(12), dp(12), dp(12), dp(20)); isAccessibilityHeading = true
+        text = value; setTextColor(color(R.color.ink_black)); isAccessibilityHeading = true
     }
     fun text(value: String) = block<TextView>(R.layout.block_text).apply { text = value; if(dark) setTextColor(color(R.color.paper_cream)) }
     fun button(label: String, enabled: Boolean = true, primary: Boolean = false, action: () -> Unit): Button = block<Button>(R.layout.block_button).apply {
@@ -137,21 +143,17 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
         isEnabled = enabled; alpha = if(enabled) 1f else .55f; setOnClickListener { action() }
     }
     fun actionRow(label: String, copy: String = "", action: () -> Unit): LinearLayout = block<LinearLayout>(R.layout.row_action).apply {
-        background = CollageSurface(activity, "paper")
         findViewById<TextView>(R.id.action_title).text = label
         findViewById<TextView>(R.id.action_copy).apply { text = copy; visibility = if(copy.isBlank()) View.GONE else View.VISIBLE }
         setOnClickListener { action() }
     }
     fun category(label: String, copy: String, tone: String = "paper", action: () -> Unit): LinearLayout = actionRow(label, copy, action).apply {
-        background = CollageSurface(activity, tone, 1)
-        val foreground = color(if(tone == "red" || tone == "blue") R.color.warm_white else R.color.ink_black)
+        val foreground = color(if(tone == "blue") R.color.archive_blue else if(tone == "red") R.color.deep_red else R.color.ink_black)
         findViewById<TextView>(R.id.action_title).apply { textSize = 28f; setTextColor(foreground) }
         findViewById<TextView>(R.id.action_copy).setTextColor(foreground)
         findViewById<ImageView>(R.id.action_arrow).imageTintList = ColorStateList.valueOf(foreground)
-        setPadding(dp(20), dp(20), dp(20), dp(28))
     }
     fun dataPair(label: String, value: String): LinearLayout = block<LinearLayout>(R.layout.block_data).apply {
-        background = CollageSurface(activity, "paper")
         findViewById<TextView>(R.id.data_label).text = label
         findViewById<TextView>(R.id.data_value).text = value.ifBlank { "Not documented" }
     }
@@ -172,7 +174,7 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     }
     fun scorePanel(score: Int, copy: String) {
         block<LinearLayout>(R.layout.block_score).apply {
-            background = CollageSurface(activity, "yellow", 1)
+            background = CollageSurface(activity, "paper")
             findViewById<TextView>(R.id.score_value).text = "$score / 100"
             findViewById<TextView>(R.id.score_copy).text = copy
         }
@@ -198,18 +200,19 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             findViewById<Button>(R.id.state_retry).apply { visibility = if(retry != null) View.VISIBLE else View.GONE; setOnClickListener { retry?.invoke() } }
         }
     }
-    fun image(item: ArchiveItem, large: Boolean = true, action: (() -> Unit)? = null) {
+    fun image(item: ArchiveItem, large: Boolean = true, action: (() -> Unit)? = null, onState: (ArchiveImageState) -> Unit = {}): ImageView {
         val frame = block<FrameLayout>(R.layout.block_image)
         frame.background = CollageSurface(activity, "paper", 1)
         val view = frame.findViewById<ImageView>(R.id.large_image)
         frame.layoutParams.height = dp(if(vm.route.screen == "image") 420 else 280)
-        images.load(view, item.image, "${item.name} image", imageScope)
+        loadImage(view, item, onState)
         if(!large) frame.layoutParams.height = dp(100)
         if(action != null) { view.setOnClickListener { action() }; view.contentDescription = "Open full image of ${item.name}" }
+        return view
     }
+    fun loadImage(view: ImageView, item: ArchiveItem, onState: (ArchiveImageState) -> Unit) = images.load(view, item.image, "${item.name} image", imageScope, onState)
     fun character(item: ArchiveItem, selected: Boolean = false, action: (() -> Unit)? = null) {
         block<LinearLayout>(R.layout.row_character).apply {
-            background = CollageSurface(activity, "paper", 1)
             tag = "${item.kind}/${item.id}"
             findViewById<TextView>(R.id.record_name).text = item.name
             val metadata = listOf(item.text("real_name"), item.reference("publisher")?.name.orEmpty(), item.text("cover_date"), item.text("issue_number").takeIf { it.isNotBlank() }?.let { "Issue #$it" }.orEmpty()).filter { it.isNotBlank() }
@@ -223,7 +226,8 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             isSelected = selected
             if(selected) {
                 val outline = android.graphics.drawable.GradientDrawable().apply { setColor(android.graphics.Color.TRANSPARENT); setStroke(dp(2), color(R.color.archive_red)); cornerRadius = dp(4).toFloat() }
-                background = android.graphics.drawable.LayerDrawable(arrayOf(CollageSurface(activity, "paper", 1), outline))
+                background = android.graphics.drawable.LayerDrawable(arrayOf(CollageSurface(activity, "paper"), outline))
+                setPadding(dp(8),dp(12),dp(8),dp(12))
             }
             setOnClickListener { action?.invoke() ?: open(item) }
         }
@@ -231,23 +235,23 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     fun open(item: ArchiveItem) { vm.navigate("detail", item.kind, item.id.toString()) }
     fun missionCard(mission: Mission, featured: Boolean = false) {
         block<LinearLayout>(R.layout.row_mission).apply {
-            background = CollageSurface(activity, if(featured) "yellow" else "paper", 1)
+            findViewById<CollageArtView>(R.id.mission_art).variant = 2
             findViewById<TextView>(R.id.mission_title).text = mission.title
             findViewById<TextView>(R.id.mission_description).text = mission.description
             findViewById<TextView>(R.id.mission_action).text = if(featured) "Start a Mission" else "Read Briefing · Up to ${mission.size} members"
-            setOnClickListener {
-                if(vm.roster.isNotEmpty() || vm.teamName.isNotBlank()) {
-                    AlertDialog.Builder(activity).setTitle("Replace your active team?").setMessage("Starting ${mission.title} clears your current recruitment draft. You can keep it and continue recruiting.")
-                        .setNegativeButton("Keep current team", null).setPositiveButton("Start new mission") { _, _ -> vm.startMission(mission) }.show()
-                } else vm.startMission(mission)
-            }
+            setOnClickListener { chooseMission(mission) }
         }
+    }
+    fun chooseMission(mission: Mission) {
+        if(vm.hasRecruitmentDraft) {
+            AlertDialog.Builder(activity).setTitle("Replace your active team?").setMessage("Starting ${mission.title} clears your current recruitment draft. You can keep it and continue recruiting.")
+                .setNegativeButton("Keep current team", null).setPositiveButton("Start new mission") { _, _ -> vm.startMission(mission) }.show()
+        } else vm.startMission(mission)
     }
     fun profileRow(action: (() -> Unit)? = null) {
         val user = vm.user ?: return
         val row = block<LinearLayout>(R.layout.row_profile)
-        row.background = CollageSurface(activity, "paper", 1)
-        row.setPadding(dp(16), dp(16), dp(16), dp(24))
+        row.setPadding(0, dp(8), 0, dp(20))
         val photo = row.findViewById<ImageView>(R.id.profile_photo)
         if(user.photoUrl != null) images.load(photo, user.photoUrl.toString(), "${user.displayName ?: "Agent"} profile picture", imageScope)
         else photo.contentDescription = "Profile picture unavailable"
@@ -264,6 +268,14 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             chip.alpha = if(chip.isEnabled) 1f else .55f
             chip.contentDescription = option + if(!chip.isEnabled) ", unavailable: alignment not documented" else if(chip.isChecked) ", selected" else ""
             chip.setOnClickListener { action(option) }; row.addView(chip)
+        }
+        scroll.doOnLayout {
+            val selectedChip = (0 until row.childCount).map { row.getChildAt(it) }
+                .filterIsInstance<RadioButton>().firstOrNull { it.isChecked }
+            if(selectedChip != null) {
+                val offset = selectedChip.left + selectedChip.width / 2 - scroll.width / 2
+                scroll.scrollTo(offset.coerceIn(0, (row.width - scroll.width).coerceAtLeast(0)), 0)
+            }
         }
     }
     fun syncStatus() {
@@ -287,9 +299,10 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
         if(remote.loading) state("Retrieving dossiers", "Connecting to Comic Vine…", loading = true)
         if(remote.error != null) state("Signal lost", remote.error, retry = { vm.loadPage(kind, query, more = remote.append, refresh = true) })
         remote.value?.let { page ->
-            val items = if(kind == "character" && vm.marvelOnly && !selection) page.items.filter { it.reference("publisher")?.id == 31 || it.reference("publisher")?.name.equals("Marvel", true) } else page.items
-            text(if(vm.marvelOnly && kind == "character" && !selection) "${items.size} Marvel records in ${page.items.size} loaded results. Publisher filtering applies to loaded records." else "${page.total} results · ${page.items.size} loaded")
-            if(items.isEmpty() && !remote.loading) state(if(kind == "character") "No agents found" else "No records found", if(vm.marvelOnly) "No Marvel matches on the loaded pages. Load more or choose All." else "Try another name or browse the archive.")
+            val filterMarvel = kind == "character" && vm.marvelOnly && !selection
+            val items = if(filterMarvel) page.items.filter { it.reference("publisher")?.id == 31 || it.reference("publisher")?.name.equals("Marvel", true) } else page.items
+            text(if(filterMarvel) "${items.size} Marvel records in ${page.items.size} loaded results. Publisher filtering applies to loaded records." else "${page.total} results · ${page.items.size} loaded")
+            if(items.isEmpty() && !remote.loading) state(if(kind == "character") "No agents found" else "No records found", if(filterMarvel) "No Marvel matches on the loaded pages. Load more or choose All." else "Try another name or browse the archive.")
             for(item in items) character(item, selected = selection && isCandidateSelected(item), action = if(selection) ({ vm.select(item) }) else null)
             if(page.hasMore) button(if(remote.loading) "Loading more…" else "Load more", !remote.loading) { vm.loadPage(kind, query, more = true) }
         }

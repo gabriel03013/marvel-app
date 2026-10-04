@@ -62,6 +62,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     val roster = mutableListOf<ArchiveItem>()
     var teamName = ""
         set(value) { if(field != value) cancelReportGeneration(); field = value }
+    val hasRecruitmentDraft get() = roster.isNotEmpty() || teamName.isNotBlank() || (mission.id == "custom" && customBriefing.isNotBlank())
     var report: SavedTeam? = null
     var compareA: ArchiveItem? = null
     var compareB: ArchiveItem? = null
@@ -70,6 +71,8 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     var relatedItems = emptyList<ArchiveItem>()
     var relatedHeading = "Related records"
     var relatedLimit = 20
+    private data class RelatedSnapshot(val heading: String, val items: List<ArchiveItem>, val limit: Int)
+    private val relatedSnapshots = mutableMapOf<String, RelatedSnapshot>()
     var timelineFilter = "All"
     var timeline = Remote<List<ArchiveItem>>()
     var message: String? = null
@@ -96,12 +99,12 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             listeners.forEach { it.remove() }; listeners.clear()
             favorites = emptyList(); teams = emptyList(); history = emptyList(); recent = emptyList(); searches = emptyList()
             roster.clear(); report = null; compareA = null; compareB = null; timelineCharacter = null
-            queries.clear(); submittedQueries.clear(); marvelOnly = false; selectionPurpose = "mission"; relatedItems = emptyList(); timeline = Remote()
+            queries.clear(); submittedQueries.clear(); marvelOnly = false; selectionPurpose = "mission"; relatedItems = emptyList(); relatedSnapshots.clear(); timeline = Remote()
             persistenceError = null; cachedCollections.clear(); pendingCollections.clear()
             stack.clear(); stack += Route(if (next == null) "welcome" else "home")
             if (next != null) {
                 loadLocal(next.uid); observeCollections(next.uid); saveProfile(next)
-                pendingRestore?.takeIf { it.first == next.uid }?.let { (_, routes) -> stack.clear(); stack.addAll(routes) }; pendingRestore = null
+                pendingRestore?.takeIf { it.first == next.uid }?.let { (_, routes) -> stack.clear(); stack.addAll(routes); restoreRelatedContext() }; pendingRestore = null
             }
             notifyChanged()
         }
@@ -110,9 +113,22 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     fun notifyChanged() { changes.value++ }
     fun navigate(screen: String, kind: String = "", id: String = "") {
         cancelReportGeneration()
-        stack += Route(screen, kind, id); notifyChanged()
+        saveRelatedContext()
+        val next = Route(screen, kind, if(screen == "related" && id.isBlank()) UUID.randomUUID().toString() else id)
+        if(screen == "related") relatedSnapshots[next.id] = RelatedSnapshot(relatedHeading, relatedItems.toList(), relatedLimit)
+        stack += next; notifyChanged()
     }
-    fun destination(screen: String) { cancelReportGeneration(); stack.clear(); stack += Route(screen); notifyChanged() }
+    fun destination(screen: String) { cancelReportGeneration(); relatedSnapshots.clear(); stack.clear(); stack += Route(screen); notifyChanged() }
+    private fun saveRelatedContext() {
+        if(route.screen == "related") relatedSnapshots[route.id] = RelatedSnapshot(relatedHeading, relatedItems.toList(), relatedLimit)
+    }
+    private fun restoreRelatedContext() {
+        if(route.screen != "related") return
+        val snapshot = relatedSnapshots[route.id]
+        relatedHeading = snapshot?.heading ?: "Related records"
+        relatedItems = snapshot?.items ?: emptyList()
+        relatedLimit = snapshot?.limit ?: 20
+    }
     fun back(): Boolean {
         cancelReportGeneration()
         if (route.screen in listOf("sign-in", "email-sign-in", "sign-up", "password-reset")) {
@@ -120,7 +136,11 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             clearAuthForm()
             if (pendingEmailAuth != null) authError = pendingAuthMessage
         }
-        if (stack.size > 1) { stack.removeAt(stack.lastIndex); notifyChanged(); return true }
+        if (stack.size > 1) {
+            val departed = stack.removeAt(stack.lastIndex)
+            if(departed.screen == "related") relatedSnapshots.remove(departed.id)
+            restoreRelatedContext(); notifyChanged(); return true
+        }
         if (user != null && route.screen != "home") { destination("home"); return true }
         return false
     }
@@ -128,7 +148,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
         if (routes.isEmpty() || routes.any { it.screen in listOf("welcome", "splash", "sign-in", "email-sign-in", "sign-up", "password-reset") }) return
         if (user == null) { pendingRestore = uid to routes; return }
         if (user?.uid == uid && routes.isNotEmpty() && routes.none { it.screen in listOf("welcome", "splash", "sign-in", "email-sign-in", "sign-up", "password-reset") }) {
-            stack.clear(); stack.addAll(routes); notifyChanged()
+            stack.clear(); stack.addAll(routes); restoreRelatedContext(); notifyChanged()
         }
     }
     fun beginGoogleAuth(): Int? {
@@ -325,7 +345,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             notifyChanged()
         }
     }
-    fun startMission(template: Mission) { cancelReportGeneration(); mission = template; roster.clear(); teamName = ""; report = null; navigate("briefing", id = template.id) }
+    fun startMission(template: Mission) { cancelReportGeneration(); mission = template; roster.clear(); teamName = ""; customBriefing = ""; report = null; navigate("briefing", id = template.id) }
     fun select(item: ArchiveItem) {
         cancelReportGeneration()
         when(selectionPurpose) {
@@ -417,15 +437,26 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     fun loadTimeline(refresh: Boolean = false) {
         val selected = timelineCharacter ?: return
         if (timeline.loading || (!refresh && timeline.value != null)) return
-        timeline = Remote(loading = true); notifyChanged()
+        val previous = timeline.value
+        timeline = Remote(previous, loading = true); notifyChanged()
         viewModelScope.launch {
             try {
-                val hero = api.detail("character", selected.id, refresh); timelineCharacter = hero
+                val hero = api.detail("character", selected.id, refresh)
+                if(timelineCharacter?.id != selected.id) return@launch
+                timelineCharacter = hero
                 val issues = (listOfNotNull(hero.reference("first_appeared_in_issue")) + hero.related("issue_credits")).distinctBy { it.id }.take(20)
                 val loaded = mutableListOf<ArchiveItem>(); var failed = 0
-                for (issue in issues) { try { loaded += api.detail("issue", issue.id, refresh) } catch (e: Exception) { if (e is CancellationException && e !is TimeoutCancellationException) throw e; failed++ } }
-                timeline = Remote(loaded.sortedBy { it.text("cover_date").ifBlank { "9999" } }, error = if(failed > 0) "Some dates could not be loaded. Retry to complete this partial timeline." else null)
-            } catch (e: Exception) { if (e is CancellationException && e !is TimeoutCancellationException) throw e; timeline = Remote(error = e.message) }
+                for (issue in issues) { try { loaded += api.detail("issue", issue.id, refresh) } catch (e: Exception) {
+                    if (e is CancellationException && e !is TimeoutCancellationException) throw e
+                    failed++; previous?.firstOrNull { it.id == issue.id }?.let { loaded += it }
+                } }
+                if(timelineCharacter?.id != selected.id) return@launch
+                timeline = Remote(loaded.sortedBy { it.text("cover_date").ifBlank { "9999" } }, error = if(failed > 0) "Some dates could not be refreshed. Previous records are kept where available. Retry to complete this partial timeline." else null)
+            } catch (e: Exception) {
+                if (e is CancellationException && e !is TimeoutCancellationException) throw e
+                if(timelineCharacter?.id != selected.id) return@launch
+                timeline = Remote(previous, error = e.message)
+            }
             notifyChanged()
         }
     }

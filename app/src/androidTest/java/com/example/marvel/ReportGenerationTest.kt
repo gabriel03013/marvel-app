@@ -22,7 +22,7 @@ import java.io.File
 class ReportGenerationTest {
     @Test fun abandonedReportsNeverRestoreAnOldDraftOrNavigate() = runBlocking {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val folder = File(instrumentation.targetContext.getExternalFilesDir(null), "design-review")
+        val folder = File(instrumentation.targetContext.filesDir, "design-review")
         fun record(id: Int) = ArchiveItem.fromJson(JSONObject(File(folder,"record-character-$id.json").readText()),"character")
         val spider = record(1443); val gambit = record(1499)
         val auth = FirebaseAuth.getInstance().apply { useEmulator("10.0.2.2",9099); signOut() }

@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp" android:layout_marginBottom="8dp">
-    <TextView android:id="@+id/data_label" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="13sp" android:textColor="@color/muted_ink"/>
-    <TextView android:id="@+id/data_value" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:textSize="18sp" android:textColor="@color/ink_black"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="top" android:paddingVertical="12dp" android:layout_marginBottom="4dp">
+<TextView android:id="@+id/data_label" android:layout_width="0dp" android:layout_weight=".42" android:layout_height="wrap_content" android:paddingEnd="12dp" android:textSize="14sp" android:textColor="@color/muted_ink" android:lineSpacingExtra="3dp"/>
+<TextView android:id="@+id/data_value" android:layout_width="0dp" android:layout_weight=".58" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="@color/ink_black" android:lineSpacingExtra="3dp"/>
 </LinearLayout>

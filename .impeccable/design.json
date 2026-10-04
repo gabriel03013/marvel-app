@@ -1,0 +1,1257 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-03T22:42:32.429111Z",
+  "title": "Design System: S.H.I.E.L.D. Archives",
+  "extensions": {
+    "colorMeta": {
+      "carbon-ink": {
+        "role": "neutral",
+        "displayName": "Carbon Ink",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 2
+        }
+      },
+      "action-vermilion": {
+        "role": "primary",
+        "displayName": "Action Vermilion",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 3
+        }
+      },
+      "deep-vermilion": {
+        "role": "primary",
+        "displayName": "Deep Vermilion",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 3
+        }
+      },
+      "reading-paper": {
+        "role": "neutral",
+        "displayName": "Reading Paper",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 4
+        }
+      },
+      "warm-white": {
+        "role": "neutral",
+        "displayName": "Warm White",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 4
+        }
+      },
+      "progress-yellow": {
+        "role": "tertiary",
+        "displayName": "Progress Yellow",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 5
+        }
+      },
+      "archive-cobalt": {
+        "role": "secondary",
+        "displayName": "Archive Cobalt",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 5
+        }
+      },
+      "body-ink": {
+        "role": "neutral",
+        "displayName": "Body Ink",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 6
+        }
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 6
+        }
+      },
+      "paper-rule": {
+        "role": "neutral",
+        "displayName": "Paper Rule",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+          "line": 7
+        }
+      },
+      "chip-outline": {
+        "role": "neutral",
+        "displayName": "Chip Outline",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/chip_background.xml",
+          "line": 3
+        }
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Standard page and cover titles.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+          "line": 12
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "form-title": {
+        "displayName": "Form Title",
+        "purpose": "Account titles.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_email_auth.xml",
+          "line": 61
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "compact-title": {
+        "displayName": "Compact Title",
+        "purpose": "Compact task and mission titles.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "record-title": {
+        "displayName": "Record Title",
+        "purpose": "Record names and sections.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml",
+          "line": 4
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "action-title": {
+        "displayName": "Action Title",
+        "purpose": "Quiet action-row titles.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_action.xml",
+          "line": 3
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "category-title": {
+        "displayName": "Category Title",
+        "purpose": "Archive category actions.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Reading copy, controls and fields.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+          "line": 24
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "secondary": {
+        "displayName": "Secondary",
+        "purpose": "Metadata, short secondary text and chips.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml",
+          "line": 5
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "Evidence notes and profile email.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "navigation": {
+        "displayName": "Navigation",
+        "purpose": "Destination labels.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/nav_item.xml",
+          "line": 3
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "top-bar": {
+        "displayName": "Top Bar",
+        "purpose": "Persistent archive and report label.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/activity_main.xml",
+          "line": 4
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      },
+      "evaluation": {
+        "displayName": "Evaluation",
+        "purpose": "App-generated evaluation score.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_score.xml",
+          "line": 3
+        },
+        "weightProvenance": "Bundled font metadata default; no explicit numeric weight declared in XML."
+      }
+    },
+    "motion": [
+      {
+        "name": "route-reveal",
+        "value": "180ms; native alpha 0.88 to 1; DecelerateInterpolator()",
+        "purpose": "One opacity reveal on a changed route; gated by ValueAnimator.areAnimatorsEnabled().",
+        "durationMs": 180,
+        "alphaFrom": 0.88,
+        "alphaTo": 1,
+        "nativeInterpolator": "android.view.animation.DecelerateInterpolator",
+        "condition": "!sameScreen && ValueAnimator.areAnimatorsEnabled()",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt",
+          "line": 117
+        }
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "navigation-rail",
+        "value": "600dp",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+        }
+      }
+    ],
+    "native": {
+      "platform": "android",
+      "implementation": "Kotlin/XML Views",
+      "units": {
+        "geometry": "dp",
+        "type": "sp"
+      },
+      "fontDefaults": [
+        {
+          "family": "Bebas Neue",
+          "source": {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/bebas_neue.ttf"
+          },
+          "face": "Regular",
+          "intrinsicWeight": 400,
+          "variableAxes": []
+        },
+        {
+          "family": "Oswald",
+          "source": {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/oswald.ttf"
+          },
+          "face": "Regular",
+          "intrinsicWeight": 400,
+          "variableAxes": [
+            {
+              "axis": "wght",
+              "minimum": 200,
+              "default": 400,
+              "maximum": 700
+            }
+          ]
+        },
+        {
+          "family": "Space Grotesk",
+          "source": {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/space_grotesk.ttf"
+          },
+          "face": "Light",
+          "intrinsicWeight": 300,
+          "variableAxes": [
+            {
+              "axis": "wght",
+              "minimum": 300,
+              "default": 300,
+              "maximum": 700
+            }
+          ]
+        },
+        {
+          "family": "Barlow Condensed",
+          "source": {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/barlow_condensed.ttf"
+          },
+          "face": "Bold",
+          "intrinsicWeight": 700,
+          "variableAxes": []
+        }
+      ],
+      "textDefaults": {
+        "fontVariationSettings": "Not declared.",
+        "letterSpacing": "Not explicitly declared; inherited native defaults.",
+        "lineHeight": "Not fixed; use native font metrics plus declared lineSpacingExtra.",
+        "lineSpacingExtra": {
+          "body": "4dp",
+          "note": "3dp",
+          "recordDeck": "3dp",
+          "dataRows": "3dp",
+          "recordMetadata": "2dp",
+          "welcomeSupportingTitle": "2dp"
+        },
+        "includeFontPadding": {
+          "default": "Native TextView default retained.",
+          "explicitFalse": [
+            "Welcome wordmark",
+            "Welcome ARCHIVES title",
+            "Welcome supporting title",
+            "Auth title"
+          ]
+        },
+        "profileNameTextStyle": "bold",
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_profile.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_welcome.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_email_auth.xml"
+          }
+        ]
+      },
+      "colorResourceAliases": {
+        "carbon-ink": [
+          "archive_black",
+          "ink_black"
+        ],
+        "action-vermilion": [
+          "archive_red"
+        ],
+        "deep-vermilion": [
+          "deep_red"
+        ],
+        "reading-paper": [
+          "paper_cream"
+        ],
+        "warm-white": [
+          "warm_white"
+        ],
+        "progress-yellow": [
+          "comic_yellow"
+        ],
+        "archive-cobalt": [
+          "archive_blue"
+        ],
+        "body-ink": [
+          "ink_gray"
+        ],
+        "muted-ink": [
+          "muted_ink"
+        ],
+        "paper-rule": [
+          "paper_rule",
+          "stage_muted"
+        ]
+      },
+      "roundedSources": {
+        "selection": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+        },
+        "control": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/CollageArtView.kt",
+          "line": 24
+        },
+        "paper-image": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/card_paper.xml"
+        },
+        "chip": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/chip_background.xml"
+        }
+      },
+      "spacingSources": {
+        "space-4": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_progress.xml"
+        },
+        "space-6": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml",
+          "line": 5
+        },
+        "space-8": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+          "line": 38
+        },
+        "space-10": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+          "line": 22
+        },
+        "space-12": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml",
+          "line": 1
+        },
+        "space-16": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml",
+          "line": 3
+        },
+        "space-18": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_chip.xml",
+          "line": 1
+        },
+        "space-20": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_page.xml",
+          "line": 2
+        },
+        "space-24": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+          "line": 21
+        }
+      },
+      "layout": {
+        "readingContainer": "min(640dp, screenWidthDp - 104dp), centered, at widths >= 600dp; includes 20dp padding.",
+        "welcomeContainer": "520dp centered at widths >= 600dp, inside 20dp outer padding.",
+        "authContainer": "min(520dp, screenWidthDp - 40dp), centered, inside 20dp outer padding.",
+        "rootInsets": "systemBars + displayCutout; bottom=max(systemBar.bottom, ime.bottom)",
+        "topBarMinHeight": "56dp",
+        "backAndSearchTarget": "48dp",
+        "sectionMargins": {
+          "top": "24dp",
+          "bottom": "10dp"
+        },
+        "dataRow": {
+          "labelWeight": 0.42,
+          "valueWeight": 0.58,
+          "paddingVertical": "12dp",
+          "marginBottom": "4dp",
+          "labelPaddingEnd": "12dp"
+        },
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/AuthScreens.kt",
+            "line": 85
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt",
+            "line": 51
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_data.xml"
+          }
+        ]
+      },
+      "elevation": {
+        "readingSurfaces": "No app-defined elevation or shadow.",
+        "buttonInheritance": "ArchiveButton extends android:style/Widget.Material.Button; stateListAnimator is inherited.",
+        "numericElevation": "Not declared by app; platform-dependent inherited native value.",
+        "source": {
+          "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+          "line": 29
+        }
+      },
+      "components": {
+        "button-primary": {
+          "view": "android.widget.Button",
+          "minHeight": "56dp",
+          "height": "wrap_content",
+          "textAllCaps": false,
+          "marginTop": "8dp",
+          "marginBottom": "8dp",
+          "rippleColorAndroidArgb": "#40FFFFFF",
+          "disabledAlphaSharedHelper": 0.55,
+          "nativeElevation": "Inherited Widget.Material.Button stateListAnimator; no app-defined value.",
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+              "line": 29
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/button_red.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ]
+        },
+        "button-outline": {
+          "view": "android.widget.Button",
+          "minHeight": "56dp",
+          "height": "wrap_content",
+          "fill": "transparent",
+          "strokeWidth": "1dp",
+          "strokeColorRef": "{colors.paper-rule}",
+          "rippleColorAndroidArgb": "#18090A0C",
+          "disabledAlphaSharedHelper": 0.55,
+          "source": {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/button_outline.xml"
+          }
+        },
+        "button-text": {
+          "view": "android.widget.Button",
+          "minHeight": "48dp",
+          "height": "wrap_content",
+          "background": "?android:attr/selectableItemBackground",
+          "variants": {
+            "auth-back": {
+              "textColorRef": "{colors.carbon-ink}",
+              "width": "wrap_content",
+              "paddingStart": "0dp",
+              "paddingEnd": "16dp",
+              "drawableStart": "@drawable/ic_back",
+              "drawablePadding": "8dp"
+            }
+          },
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_welcome.xml",
+              "line": 114
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_email_auth.xml",
+              "line": 28
+            }
+          ]
+        },
+        "field": {
+          "view": "android.widget.EditText",
+          "minHeight": "56dp",
+          "height": "wrap_content",
+          "textColorHintRef": "{colors.muted-ink}",
+          "stroke": {
+            "default": {
+              "width": "1dp",
+              "colorRef": "{colors.muted-ink}"
+            },
+            "focused": {
+              "width": "2dp",
+              "colorRef": "{colors.action-vermilion}"
+            },
+            "disabled": {
+              "width": "1dp",
+              "colorRef": "{colors.paper-rule}",
+              "fillRef": "{colors.reading-paper}"
+            }
+          },
+          "singleLineDefault": true,
+          "multilineBriefingMinLines": 3,
+          "search": {
+            "fieldWidth": "0dp",
+            "layoutWeight": 1,
+            "clearTarget": "48dp",
+            "imeOptions": "actionSearch"
+          },
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/field_background.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_search.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_email_auth.xml"
+            }
+          ]
+        },
+        "chip": {
+          "view": "android.widget.RadioButton",
+          "minHeight": "48dp",
+          "width": "wrap_content",
+          "height": "wrap_content",
+          "buttonDrawable": null,
+          "marginEnd": "8dp",
+          "unselectedStrokeWidth": "1dp",
+          "unselectedStrokeColorRef": "{colors.chip-outline}",
+          "selectedRef": "chip-selected",
+          "disabledAlpha": 0.55,
+          "container": "HorizontalScrollView",
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_chip.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/chip_background.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ],
+          "selectedVisibility": "doOnLayout centers the checked chip, clamped to 0..max(row.width - scroll.width, 0), after entry or rerender."
+        },
+        "navigation-bar": {
+          "view": "android.widget.LinearLayout",
+          "phone": {
+            "orientation": "horizontal",
+            "paddingVertical": "6dp",
+            "itemWidth": "0dp",
+            "itemWeight": 1
+          },
+          "rail": {
+            "orientation": "vertical",
+            "width": "104dp",
+            "paddingTop": "16dp",
+            "itemWidth": "match_parent"
+          },
+          "item": {
+            "minHeight": "64dp",
+            "height": "wrap_content",
+            "paddingVertical": "8dp",
+            "phoneMarginHorizontal": "4dp",
+            "iconSize": "24dp",
+            "labelMarginTop": "4dp",
+            "foreground": "?android:attr/selectableItemBackground",
+            "focusable": true
+          },
+          "selectedRef": "navigation-selected",
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/activity_main.xml",
+              "line": 9
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout-w600dp/activity_main.xml",
+              "line": 8
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/nav_item.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ]
+        },
+        "record-row": {
+          "view": "android.widget.LinearLayout",
+          "minHeight": "124dp",
+          "height": "wrap_content",
+          "marginBottom": "12dp",
+          "image": {
+            "width": "96dp",
+            "height": "128dp",
+            "scaleType": "centerCrop",
+            "backgroundRef": "{colors.paper-rule}"
+          },
+          "textColumn": {
+            "width": "0dp",
+            "layoutWeight": 1,
+            "paddingStart": "16dp"
+          },
+          "metadata": {
+            "colorRef": "{colors.archive-cobalt}",
+            "marginTop": "6dp",
+            "lineSpacingExtra": "2dp"
+          },
+          "deck": {
+            "maxLines": 3,
+            "ellipsize": "end",
+            "lineSpacingExtra": "3dp",
+            "marginTop": "8dp",
+            "hiddenWhenBlank": true
+          },
+          "selected": {
+            "refersTo": "record-row-selected",
+            "outlineWidth": "2dp",
+            "outlineColorRef": "{colors.action-vermilion}",
+            "outlineRadiusRef": "{rounded.selection}",
+            "fillRadiusRef": "{rounded.control}",
+            "labelColorRef": "{colors.deep-vermilion}",
+            "nativeIsSelected": true,
+            "missionCopy": "Selected \u00b7 Tap to remove",
+            "otherSelectionCopy": "Current selection \u00b7 Tap to confirm"
+          },
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ]
+        },
+        "mission-cover": {
+          "view": "android.widget.LinearLayout",
+          "height": "wrap_content",
+          "marginVertical": "16dp",
+          "artHeight": "176dp",
+          "artScaleType": "FIT_CENTER",
+          "titleMarginTop": "12dp",
+          "bodyMarginTop": "8dp",
+          "action": {
+            "minHeight": "56dp",
+            "padding": "12dp",
+            "marginTop": "16dp",
+            "background": "@drawable/button_red"
+          },
+          "foreground": "?android:attr/selectableItemBackground",
+          "focusable": true,
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_mission.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ]
+        },
+        "native-title": {
+          "view": "android.widget.LinearLayout",
+          "height": "wrap_content",
+          "marginBottom": "16dp",
+          "title": {
+            "width": "0dp",
+            "layoutWeight": 1,
+            "paddingEnd": "8dp"
+          },
+          "art": {
+            "defaultWidth": "112dp",
+            "defaultHeight": "112dp",
+            "compactWidth": "88dp",
+            "compactHeight": "80dp",
+            "scaleType": "FIT_CENTER",
+            "decorative": true
+          },
+          "compactTypographyRef": "{typography.compact-title}",
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_cover.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ]
+        },
+        "paper-surface": {
+          "view": "android.graphics.drawable.GradientDrawable",
+          "variants": [
+            "paper",
+            "red",
+            "blue",
+            "yellow",
+            "dark"
+          ],
+          "opaque": true,
+          "statePanel": {
+            "padding": "20dp",
+            "marginVertical": "16dp",
+            "artHeight": "48dp",
+            "spinnerSize": "40dp",
+            "spinnerAndSkeletonVisibleWhenLoading": true,
+            "retryVisibleWhenCallbackSupplied": true
+          },
+          "sources": [
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/CollageArtView.kt",
+              "line": 21
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_state.xml"
+            },
+            {
+              "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+            }
+          ]
+        }
+      },
+      "accessibility": {
+        "meaningfulImages": "ArchiveImages binds record/profile names; missing and failed URLs add Image unavailable.",
+        "decorativeImages": "CollageArtView and navigation/row decoration use IMPORTANT_FOR_ACCESSIBILITY_NO.",
+        "headings": "Native page and section headings; Welcome and auth title explicitly marked.",
+        "labels": "Auth labelFor links; generated form labels assign labelFor IDs.",
+        "selectedStates": "Navigation isSelected; record isSelected; chip isChecked; recruitment progress isSelected.",
+        "liveRegions": [
+          "State copy",
+          "Auth feedback",
+          "Google error",
+          "Image-viewer status",
+          "Global message"
+        ],
+        "targets": {
+          "iconActions": "48dp",
+          "accountTextActions": "48dp minimum",
+          "chip": "48dp minimum",
+          "primaryButton": "56dp minimum",
+          "navigation": "64dp minimum",
+          "actionRow": "64dp minimum"
+        },
+        "reflow": "Wrap-content native layouts and sp text; excerpt only limited to 3 lines.",
+        "routeMotionSetting": "ValueAnimator.areAnimatorsEnabled()",
+        "navigation": "Android Back plus visible native Back controls for secondary/auth screens.",
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveImages.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_email_auth.xml"
+          }
+        ],
+        "activeDestinationResolution": "Nearest classified destination in the reversed route stack. Mission routes map to Recruit; saved collection routes to Collection; dossier/image/archive-list use their record kind. Compare, timeline, selectors, related records, quick search, profile and settings retain the classified parent; Home is the standalone fallback."
+      },
+      "images": {
+        "art": {
+          "resources": [
+            "collage_heroes.png",
+            "collage_cosmic.png",
+            "collage_paper_label.png"
+          ],
+          "scaleType": "FIT_CENTER",
+          "contentRole": "Original decorative comic collage",
+          "provenance": "/home/gabriel/Documents/codes/marvel/artifacts/design/rebuild/asset-provenance.json"
+        },
+        "recordScaleType": "centerCrop",
+        "largeScaleType": "centerInside",
+        "largeFrameHeight": "280dp",
+        "viewerFrameHeight": "420dp",
+        "loadingPlaceholder": "@drawable/ic_dossier",
+        "states": [
+          "LOADING",
+          "READY",
+          "MISSING",
+          "FAILED"
+        ],
+        "viewer": {
+          "loading": "Loading image\u2026",
+          "missing": "No image available for this record.",
+          "failed": "Could not load this image. Check your connection and retry.",
+          "retryCopy": "Retry image",
+          "retryVisible": "FAILED only",
+          "ready": "Status and retry hidden; successful provider bitmap displayed uncropped."
+        },
+        "listAndDetailRecovery": "Placeholder plus accessible Image unavailable description; no individual retry button.",
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveImages.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/DiscoveryScreens.kt",
+            "line": 246
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+          }
+        ]
+      },
+      "dataStates": {
+        "remote": "Shared loading/empty/error/retry panel; retained rows remain visible during loading and failure.",
+        "emptyFilterGuard": "kind == character && vm.marvelOnly && !selection",
+        "collection": [
+          "Loading",
+          "Sync interrupted with Retry",
+          "Pending local changes",
+          "Cached data disclosure"
+        ],
+        "globalMessageDurationMs": 5000,
+        "globalMessageDismissal": "Tap to dismiss",
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt",
+            "line": 124
+          }
+        ],
+        "timeline": "Previous dated records remain during refresh and fatal refresh failure. Failed individual issue refreshes retain the matching previous record, with explicit previous-record disclosure and Retry. Completions from another selected character cannot overwrite the current timeline.",
+        "relatedNavigation": "Each related route has an in-memory snapshot keyed by its unique route id: heading, records and pagination limit. Android Back restores the preceding list; Activity recreation retains the ViewModel snapshot. Leaving for a primary destination/auth clears these snapshots. Process death does not serialize linked API records; a missing restored snapshot uses the honest empty recovery state."
+      },
+      "recruitmentDraft": {
+        "guard": "roster.isNotEmpty() || teamName.isNotBlank() || (mission.id == custom && customBriefing.isNotBlank())",
+        "sharedConsumers": [
+          "Home resume",
+          "Recruit resume",
+          "Mission replacement confirmation"
+        ],
+        "confirmationTitle": "Replace your active team?",
+        "keepAction": "Keep current team",
+        "replaceAction": "Start new mission",
+        "confirmedReplacementClears": [
+          "roster",
+          "teamName",
+          "customBriefing",
+          "report"
+        ],
+        "objectiveOnlyResume": "picker",
+        "rosterResume": "assembly",
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveViewModel.kt",
+            "line": 65
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveViewModel.kt",
+            "line": 329
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/AccountScreens.kt",
+            "line": 13
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/MissionScreens.kt",
+            "line": 8
+          }
+        ]
+      },
+      "launcher": {
+        "identity": "Original open book with vermilion bookmark and cobalt annotation on carbon ink.",
+        "adaptiveViewport": "108 \u00d7 108",
+        "monochrome": "Book silhouette only.",
+        "variants": [
+          "Adaptive",
+          "Round adaptive",
+          "Monochrome",
+          "Legacy layer-list"
+        ],
+        "sources": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_foreground.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_background.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_monochrome.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/mipmap-anydpi/ic_launcher.xml"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/mipmap/ic_launcher.xml"
+          }
+        ]
+      },
+      "provenance": {
+        "sourceSnapshot": [
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/colors.xml",
+            "sha256": "257669cc1cc237f26cf6676556828c9a3c9fb8cb3806f65ecd59b980b9e40b65"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/values/themes.xml",
+            "sha256": "7346bb87a34f8a9a4f43f490ee54fea54dd2a7bf5382ee1437a06a1f82c6f413"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/activity_main.xml",
+            "sha256": "76d0e71779c88f1abe435a88e927b000e85c77d7b6fccc48f72a63027bcf3622"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout-w600dp/activity_main.xml",
+            "sha256": "06d19995fbc6105fd05b397d2b7e7a5773f4699e3328ea9324ceeb9b66e92bcb"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_page.xml",
+            "sha256": "24c87cf688e2710831a2124930acd392350f6f1ec3fb8f5833445a56c9665b24"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_welcome.xml",
+            "sha256": "bb966d12a6a7e4e6b3676f89bb1249be6fafe86d95e7ee44ea475ab9c6980f6c"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/screen_email_auth.xml",
+            "sha256": "f7ae153929b08658932b54868271cdf502bec5267f5ca8c59aedd8a4d34af5bc"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_button.xml",
+            "sha256": "c42dd52fb8af12980fff2844779f20cc5740f81994b21d56f04c989a2a5b2837"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_input.xml",
+            "sha256": "43b63a46e773ae1c192e9e66b1bf50e7c673625c541b7bbabbe63716a4d6e75d"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_chip.xml",
+            "sha256": "76a4b97d1d5e03133167c89a08db13aaedfd1d723677ab697d64e7ab259aae44"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_cover.xml",
+            "sha256": "864ecf9a3f8d84190ee4353c521706a3770dc02138326754bf22719027b2142b"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_state.xml",
+            "sha256": "24e9e25c6cd2641964042a419c22cd19ed71a81e38d806db96b886ec46b2d3d0"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_data.xml",
+            "sha256": "2f0ba3fde4997f82c6e341813533c2e1d26e1664390b7a22954e0065e8afe199"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_progress.xml",
+            "sha256": "47d6e88895727f963b13885874a97128bc60951824a424af72f565b4b187a7d4"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_score.xml",
+            "sha256": "5e780a440d1382f09f8f979c182de41eaeb65fb7f067ad80cbba5884e2732d0a"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_comparison.xml",
+            "sha256": "f5084167bf93b0226356a309e9a4116ac10ec958e3211b984bca9066277b71cf"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_search.xml",
+            "sha256": "052219204597dbdf370327213265745407301142998a7091bbe24e49c54d07ea"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/block_skeleton.xml",
+            "sha256": "351e409eee1fa50d00a15679457c2450cf18f167af6f0161f1f46a0e53d49479"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/nav_item.xml",
+            "sha256": "ac048c07e01d6e5d2c28f9639034107f217753d0c97bd86c63b851849d0747a0"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_action.xml",
+            "sha256": "4bdbf7f3235d9a8379bd68360a3e9037cc50252c2c71be7427e44b70d6f85035"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_character.xml",
+            "sha256": "2d11b7ca721181f8ee8608d01e7b73681da704f04ebf3596b017dac1a3105b27"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_mission.xml",
+            "sha256": "8f4df09daaffa90e74c097f7722dec4b9aa14a86b22f17d0e187e952ebcac3a9"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/layout/row_profile.xml",
+            "sha256": "8daf2014bc4e4a2b5dd81449c20fe1eae469a16d3be547d291532d88ebba23f0"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/button_red.xml",
+            "sha256": "e4820abb9564026f38322e6a84efd855c80207f2db66f4428ca6d5d25ff37c52"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/button_outline.xml",
+            "sha256": "e2a23a0fe9416b481600415c7090f766a59741e0e99ce4f6d1f8b8f8b13ba551"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/field_background.xml",
+            "sha256": "663f097108c64b6a07a24ffffd986ce1c717abf53bc078c37ba3d68872ba4554"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/card_paper.xml",
+            "sha256": "6a3a7ea4136707d06aeccaf218f1468d763ee743d29a744f5cf60166731aa1f7"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/chip_background.xml",
+            "sha256": "445e953f5908b6000ec8777725ec20ff0a6242a3e70604c7f552d50a865a0493"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/nav_selected.xml",
+            "sha256": "4f4d1a1105b3914dfa45378ce5464239ffe1531b07b6cb78b06ed94d7f867dba"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_foreground.xml",
+            "sha256": "02c155fc35a8c559871e9b9d2c1e8bd33bc0a97cfb76e6459657b1fae124f7d4"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_background.xml",
+            "sha256": "83677234c59b69de3ebdb1699891496b2944c6b3750c1dc3d981b7cd62c6da67"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/drawable/ic_launcher_monochrome.xml",
+            "sha256": "93b07b5548a50428bb957e6d2a0aebbdb2c0d2a8a2a5394ef25a06f9e26dfb31"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/mipmap/ic_launcher.xml",
+            "sha256": "ce71677744f7973188fb8f6af73e218a3e716085d36a90df505b0bdbc776bbe2"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/mipmap/ic_launcher_round.xml",
+            "sha256": "ce71677744f7973188fb8f6af73e218a3e716085d36a90df505b0bdbc776bbe2"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/mipmap-anydpi/ic_launcher.xml",
+            "sha256": "82add00a72df2cdba968fe524e20f108a89b90b1e22ee1f9c8bf6d43f195abea"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/mipmap-anydpi/ic_launcher_round.xml",
+            "sha256": "82add00a72df2cdba968fe524e20f108a89b90b1e22ee1f9c8bf6d43f195abea"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/MainActivity.kt",
+            "sha256": "ebd5d2280a38d4b12cf2eb3cd7a467530bd6a7380583d428cc8a392d17918515"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt",
+            "sha256": "ce75cb3f131c87d77980464cdac28826dec818bcc056a28b16a2af17515a804f"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/CollageArtView.kt",
+            "sha256": "f8e8a4de912bbf2e96711ef9516a605788652565178ed15204955c4d40867709"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveImages.kt",
+            "sha256": "8323111effa9a8fdfce622d993042a92a84fc16e1cfd05b3f86a3f5083622c71"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/AuthScreens.kt",
+            "sha256": "845e25ce45e09506d396caf87b347588b08847286c3f8fbb07cd0bb30f2697fb"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/AccountScreens.kt",
+            "sha256": "c5ab55fe3b4665119e3e215553ead01f67721a823d85d3f5c15647c1b1e1159b"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/DiscoveryScreens.kt",
+            "sha256": "c7ad1a00e16db17fc5e8b0a88262246d0174228282d4afea638b0ae8839f6895"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/MissionScreens.kt",
+            "sha256": "92659cdebd46e471c89c9a64257ccc1ad7797485cd7aa6eabf3cd1afd104fa16"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveViewModel.kt",
+            "sha256": "78c537dfd2c5239b35f1acf55530fb2cf282f233806869fb11d053d5de0d91f5"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/bebas_neue.ttf",
+            "sha256": "08e4623805102d819f58601e46e345648846075e363b2ceb23313c2d1c83ec73"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/oswald.ttf",
+            "sha256": "5b38c246e255a12f5712d640d56bcced0472466fc68983d2d0410ec0457c2817"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/space_grotesk.ttf",
+            "sha256": "acad6de1fc93436f5c0f1f4137751ef04f1aea3063e7036535970ffcfbd79f72"
+          },
+          {
+            "path": "/home/gabriel/Documents/codes/marvel/app/src/main/res/font/barlow_condensed.ttf",
+            "sha256": "e476562ec9c1e16cf16475895b511f08c804f438cc9a9f80a44ea50a0eeb5b65"
+          }
+        ],
+        "method": "Resource/Kotlin extraction and bundled-font metadata; supplied static native captures sampled for visual correspondence.",
+        "sampledCaptures": [
+          "/home/gabriel/Documents/codes/marvel/artifacts/design/rebuild/captures/welcome-phone.png",
+          "/home/gabriel/Documents/codes/marvel/artifacts/design/rebuild/captures/search-phone.png",
+          "/home/gabriel/Documents/codes/marvel/artifacts/design/rebuild/captures/recruit-tablet.png"
+        ],
+        "runtimeTestingClaimed": false
+      },
+      "serializationLimits": [
+        "Native dp/sp and XML layout semantics are intentional; they are not CSS measurements.",
+        "No web HTML/CSS snippets or hover states are fabricated for native components.",
+        "No tonal ramp is synthesized; the app does not define a native tonal scale.",
+        "Exact font metrics and inherited native widget elevation remain platform-dependent; frontmatter weights describe bundled font defaults."
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Vermilion native primary action."
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Transparent quiet action with a paper-rule border."
+    },
+    {
+      "name": "Account Text Action",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Native text action for account alternatives."
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Labeled native field with a distinct focus outline."
+    },
+    {
+      "name": "Filter / Collection Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "RadioButton choice with checked yellow state."
+    },
+    {
+      "name": "Primary Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-bar",
+      "description": "Five destinations across a phone bar or tablet rail."
+    },
+    {
+      "name": "Record Row",
+      "kind": "card",
+      "refersTo": "record-row",
+      "description": "Provider image and live record text with explicit selection."
+    },
+    {
+      "name": "Mission Cover",
+      "kind": "card",
+      "refersTo": "mission-cover",
+      "description": "Original cosmic illustration, mission objective and action."
+    },
+    {
+      "name": "Native Title",
+      "kind": "custom",
+      "refersTo": "native-title",
+      "description": "Condensed live title beside proportional original art."
+    },
+    {
+      "name": "Paper State Panel",
+      "kind": "custom",
+      "refersTo": "paper-surface",
+      "description": "Opaque reading surface for loading, empty and retry states."
+    }
+  ],
+  "narrative": {
+    "northStar": "Cut, Collect, Recruit",
+    "overview": "Cut, Collect, Recruit is a usable comic fanzine: condensed ink headlines, original torn illustrations, vermilion actions and cobalt annotations on warm reading paper. Collage is present throughout the app, while opaque reading surfaces keep records, forms and controls clear.\n\nThe material comes from three original PNG cutouts with real alpha. Comic Vine imagery identifies characters and archive records; generated illustration decorates the archive. All titles, labels and product copy remain live English native text. The launcher carries an original open-book mark with a bookmark and cobalt annotation.",
+    "keyCharacteristics": [
+      "Intense original comic collage with proportional cutouts.",
+      "Condensed native headlines beside readable record imagery.",
+      "Quiet opaque paper for reading, forms and reports.",
+      "Vermilion actions, cobalt metadata and explicit selected states.",
+      "Native Android navigation, reflow and recoverable data states."
+    ],
+    "rules": [
+      {
+        "name": "The Paper Ground Rule",
+        "body": "Keep record copy and controls on opaque paper; use collage as a proportional illustration beside or above the task.",
+        "section": "colors"
+      },
+      {
+        "name": "The Live Lettering Rule",
+        "body": "Keep titles, labels, facts and actions as native text. Artwork carries no interface copy.",
+        "section": "typography"
+      },
+      {
+        "name": "The Material Depth Rule",
+        "body": "Let overlapping artwork provide the paper depth. Keep reading containers flat and retain native widget feedback.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do fit original collage proportionally and preserve its alpha.",
+      "Do place Comic Vine images and facts at the center of record content.",
+      "Do use the declared native dp/sp tokens and allow text and controls to grow.",
+      "Do retain cache and partial results while showing clear sync, error and retry copy.",
+      "Do show selection through readable labels, native selected state and the established outline.",
+      "Do use the shared recruitment draft guard before replacing a mission.",
+      "Do label evaluations and suggested roles as app-generated."
+    ],
+    "donts": [
+      "Don't put generated illustration in place of a provider character image or fabricate archive facts.",
+      "Don't use official Marvel logos as created branding.",
+      "Don't stretch paper scraps, paint text into raster art or add checkerboard backings.",
+      "Don't rotate native text, controls or touch targets.",
+      "Don't cover reading areas with texture or turn every result into a decorated tile.",
+      "Don't add continuous animation, web hover states or a synthetic CSS shadow system.",
+      "Don't present cached counts as confirmed fresh data or app evaluations as official statistics."
+    ]
+  }
+}

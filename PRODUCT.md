@@ -20,11 +20,11 @@ Kotlin with native Android XML layouts, explicitly requested by the user instead
 
 ## Brand Commitments
 
-Preserve DESIGN.md and the supplied comic-collage assets and fonts. Do not use the official Marvel logo as created branding.
+Preserve the comic archive and recruitment idea, bundled fonts and English product. The user requested a full visual rebuild, intense collage on every screen and newly generated assets to replace the rejected PNGs. DESIGN.md records the resulting system. Do not use the official Marvel logo as created branding.
 
 ## Evidence on Hand
 
-AGENTS.md, CONTEXT.md, DESIGN.md, SCREENS.md; supplied drawable textures, bundled licensed fonts and Firebase configuration. Comic Vine key was absent at initial inspection.
+AGENTS.md, CONTEXT.md, DESIGN.md, SCREENS.md; new original RGBA collage assets, bundled licensed fonts, private Firebase/Comic Vine configuration, actual native capture matrix and separate emulator flow tests. Comic Vine key was absent at initial inspection and is now configured privately.
 
 ## Product Principles
 

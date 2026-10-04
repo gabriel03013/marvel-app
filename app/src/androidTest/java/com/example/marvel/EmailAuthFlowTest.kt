@@ -32,7 +32,7 @@ class EmailAuthFlowTest {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         Thread.sleep(400)
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val folder = File(context.getExternalFilesDir(null), "review").apply { mkdirs() }
+        val folder = File(context.filesDir, "review").apply { mkdirs() }
         val bitmap = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
         val size = InstrumentationRegistry.getArguments().getString("captureClass", "phone")
         File(folder, "auth-$name-$size.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }

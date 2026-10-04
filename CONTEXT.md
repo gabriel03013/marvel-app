@@ -49,22 +49,20 @@ All user-facing app text must be in English. Character names, publisher names, t
 
 - Android application
 - Kotlin
-- Jetpack Compose
-- Material 3 dependencies already configured
+- Native Android XML layouts and Kotlin Views
+- Existing Android dependencies; no design rebuild dependency added
 - Package: `com.example.marvel`
 
 ## Current asset folder
 
-Visual assets are in `app/src/main/res/drawable/`:
+New original collage artwork is in `app/src/main/res/drawable-nodpi/`:
 
-- `comic_accents.png`
-- `archive_background.png`
-- `paper_scraps.png`
-- `dossier_elements.png`
-- `paper_texture.png`
-- `halftone_texture.png`
+- `collage_heroes.png`
+- `collage_cosmic.png`
+- `collage_paper_label.png`
+
+These generated decorative assets have real alpha and embedded provenance. Character images remain Comic Vine data. The six former assets were rejected by the user and replaced in the full design rebuild. See `artifacts/design/rebuild/asset-provenance.json`.
 
 ## Evaluation goals
 
 The school project is evaluated on usability, visual design, API usage, creativity, functionality, and presentation. A working search and character profile are mandatory. The recruitment flow is the main differentiator.
-

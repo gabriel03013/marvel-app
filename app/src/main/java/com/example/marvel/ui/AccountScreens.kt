@@ -4,79 +4,103 @@ import com.example.marvel.data.*
 
 fun ScreenRenderer.home() {
     val user = vm.user
-    title("Welcome,\n${user?.displayName?.substringBefore(' ') ?: "Agent"}.")
-    text("Your next mission starts here.")
+    val firstName = user?.displayName?.trim()?.substringBefore(' ')?.takeIf { it.isNotBlank() } ?: "Agent"
+    title("Welcome, $firstName.")
     profileRow { vm.navigate("profile") }
-    if(vm.roster.isNotEmpty() || vm.teamName.isNotBlank()) {
-        actionRow("Continue Recruitment", "${vm.mission.title} · ${vm.roster.size}/${vm.mission.size} members") {
+    button("Search Characters", primary = true) { vm.destination("search") }
+    note("Open a character dossier, discover their story and recruit them to your team.")
+
+    if (vm.hasRecruitmentDraft) {
+        section("Your active mission")
+        actionRow("Continue Recruitment", "${vm.mission.title} · ${vm.roster.size} of ${vm.mission.size} members") {
             vm.selectionPurpose = "mission"; vm.navigate(if(vm.roster.isEmpty()) "picker" else "assembly")
         }
     }
+    section("Answer the call")
     missionCard(missions.first(), true)
-    actionRow("Search Characters", "Find a name. Open a dossier.") { vm.destination("search") }
-    actionRow("Explore Archives", "Powers, teams, issues and the links between them.") { vm.destination("archives") }
+    actionRow("Explore Archives", "Follow powers, teams, issues and story arcs.") { vm.destination("archives") }
+
+    section("Your archive")
     syncStatus()
-    section("Recent dossiers")
-    if(vm.recent.isEmpty()) text("Open a character dossier to start your archive trail.")
-    vm.recent.take(3).forEach { character(it) }
-    section("Favorites")
-    if(vm.favorites.isEmpty() && !vm.collectionLoading && vm.persistenceError == null) text("Keep your favorite characters close. Save one from its Hero Diary.")
-    vm.favorites.take(3).forEach { character(it) }
-    section("Latest saved team")
-    vm.teams.firstOrNull()?.let { team -> teamCard(team) { vm.navigate("saved-team", id = team.id) } }
-        ?: if(!vm.collectionLoading && vm.persistenceError == null) text("Finish and save a mission to create your first team report.") else null
-    actionRow("Open My Collection", "Your saved characters and mission reports.") { vm.destination("collection") }
+    if (vm.recent.isEmpty() && vm.favorites.isEmpty() && vm.teams.isEmpty() && !vm.collectionLoading && vm.persistenceError == null && !vm.collectionCached) {
+        text("Save a favorite or complete a mission to begin your collection.")
+    }
+    vm.teams.firstOrNull()?.let { team ->
+        section("Latest saved team")
+        teamCard(team) { vm.navigate("saved-team", id = team.id) }
+    }
+    if (vm.favorites.isNotEmpty()) {
+        section("Favorite characters")
+        vm.favorites.take(3).forEach { character(it) }
+    }
+    if (vm.recent.isNotEmpty()) {
+        section("Recently opened")
+        note("Dossier snapshots stored on this device. Open one to retrieve its latest record.")
+        vm.recent.take(3).forEach { character(it) }
+    }
+    actionRow("Open My Collection", "Favorites, saved teams and mission history.") { vm.destination("collection") }
 }
 fun ScreenRenderer.profile() {
-    val user = vm.user ?: return
+    if (vm.user == null) return
     val firstRun = vm.route.screen == "first-run-profile"
-    title(if(firstRun) "Your agent profile" else "Agent profile")
+    title("Your profile")
     profileRow()
+    if(firstRun) button("Enter the Archives", primary = true) { vm.destination("home") }
+    section("Your collection")
     syncStatus()
-    section("Your archive")
     dataPair("Favorite dossiers", collectionCount(vm.favorites.size))
     dataPair("Saved teams", collectionCount(vm.teams.size))
     dataPair("Completed missions", collectionCount(vm.history.size))
-    if(firstRun) button("Enter the Archives", primary = true) { vm.destination("home") }
     actionRow("Settings", "Account, privacy and data credits.") { vm.navigate("settings") }
     button("Sign out") { activity.signOut() }
 }
 fun ScreenRenderer.settings() {
-    title("Settings & about")
+    title("Settings")
     section("Account")
-    text(vm.user?.email ?: "Email unavailable")
-    section("Language")
-    text("English. Comic Vine names and descriptions are displayed as supplied.")
-    section("Visual style")
-    text("A comic archive assembled from paper, ink and collected dossiers. Built for searching, discovering and recruiting.")
-    section("Data attribution")
-    text("Comic data and character imagery supplied by Comic Vine. This educational app is not affiliated with Marvel. Mission scenarios and evaluations are created by the app.")
-    section("Privacy")
-    text("Your account name, email and optional Google photo identify your archive. Favorites, saved teams and mission history are stored privately under your Firebase account. Recently viewed characters and searches are stored on this device. Signing out ends your local authentication session; it does not delete your saved collection.")
-    button("Clear recently viewed and recent searches") { vm.clearLocalHistory() }
+    dataPair("Signed in as", vm.user?.email?.takeIf { it.isNotBlank() } ?: "Email unavailable")
+    dataPair("App language", "English")
+    note("Comic Vine names and descriptions are displayed as supplied.")
+
+    section("Your data")
+    text("Favorites, saved teams and mission history are stored privately under your Firebase account. Recently viewed dossiers and searches stay on this device.")
+    note("Your account name, email and optional Google photo identify your archive. Signing out ends the local authentication session and keeps your saved collection.")
+    button("Clear recent dossiers and searches") { vm.clearLocalHistory() }
     button("Sign out") { activity.signOut() }
+
+    section("About the Archives")
+    text("A comic archive assembled from paper, ink and collected dossiers. Search, discover and recruit.")
+    section("Data credits")
+    text("Comic data and character imagery supplied by Comic Vine. This educational app is not affiliated with Marvel. Mission scenarios and evaluations are created by the app.")
 }
 fun ScreenRenderer.collection() {
     title("My collection")
-    text("Your private archive of characters and completed missions.")
-    syncStatus()
     val fixedTab = when(vm.route.screen) { "favorites" -> "Favorites"; "saved-teams" -> "Saved Teams"; "mission-history" -> "Mission History"; "recent" -> "Recently Viewed"; else -> null }
     val currentTab = fixedTab ?: vm.collectionTab
     tabs(listOf("Favorites", "Saved Teams", "Mission History", "Recently Viewed"), currentTab) { tab -> vm.collectionTab = tab; vm.destination("collection") }
-    section(currentTab)
     val count = when(currentTab) { "Favorites" -> vm.favorites.size; "Saved Teams" -> vm.teams.size; "Mission History" -> vm.history.size; else -> vm.recent.size }
-    note(if(currentTab == "Recently Viewed") "$count dossiers stored on this device" else "${collectionCount(count)} records")
+    val recordLabel = when(currentTab) { "Favorites" -> "Favorite dossiers"; "Saved Teams" -> "Saved teams"; "Mission History" -> "Completed missions"; else -> "Dossiers on this device" }
+    dataPair(recordLabel, if(currentTab == "Recently Viewed") count.toString() else collectionCount(count))
+    if(currentTab != "Recently Viewed") syncStatus()
     when(currentTab) {
         "Favorites" -> {
-            if(vm.favorites.isEmpty() && !vm.collectionLoading && vm.persistenceError == null) { state("Your archive is empty", "Find a character and tap Favorite to save a dossier."); button("Search Characters", primary = true) { vm.destination("search") } }
-            vm.favorites.forEach { member -> character(member); button("Remove ${member.name} from favorites", !vm.operationLoading) { vm.favorite(member) } }
+            if(vm.favorites.isEmpty() && !vm.collectionLoading && vm.persistenceError == null) {
+                state(if(vm.collectionCached) "No favorites cached" else "Your archive is empty", if(vm.collectionCached) "Your latest favorites will appear when Firebase syncs. Search the live archive in the meantime." else "Find a character and tap Favorite to save their dossier.")
+                button("Search Characters", primary = true) { vm.destination("search") }
+            }
+            vm.favorites.forEach { member ->
+                character(member)
+                button("Remove favorite", !vm.operationLoading) { vm.favorite(member) }.contentDescription = "Remove ${member.name} from favorites"
+            }
         }
         "Saved Teams", "Mission History" -> {
             val teams = if(currentTab == "Saved Teams") vm.teams else vm.history
-            if(teams.isEmpty() && !vm.collectionLoading && vm.persistenceError == null) { state(if(currentTab == "Saved Teams") "No saved teams yet" else "No completed missions", "Complete recruitment and save a report to keep your mission here."); button("Start a Mission", primary = true) { vm.destination("recruit") } }
+            if(teams.isEmpty() && !vm.collectionLoading && vm.persistenceError == null) {
+                state(if(vm.collectionCached) "No reports cached" else if(currentTab == "Saved Teams") "No saved teams yet" else "No completed missions", if(vm.collectionCached) "Your current reports will appear when Firebase syncs. You can begin a new mission now." else "Recruit a team and save its report to keep the mission here.")
+                button("Start a Mission", primary = true) { vm.destination("recruit") }
+            }
             teams.forEach { team ->
                 teamCard(team) { vm.navigate("saved-team", id = team.id) }
-                if(currentTab == "Saved Teams") button("Delete ${team.name}") { confirmDelete(team) }
+                if(currentTab == "Saved Teams") button("Delete saved team") { confirmDelete(team) }.contentDescription = "Delete saved team ${team.name}"
             }
         }
         "Recently Viewed" -> {
@@ -89,5 +113,7 @@ fun ScreenRenderer.collection() {
 private fun ScreenRenderer.collectionCount(size: Int): String = when {
     vm.collectionLoading -> if(size > 0) "$size loaded · syncing…" else "Loading…"
     vm.persistenceError != null -> if(size > 0) "$size loaded · sync interrupted" else "Unavailable until sync completes"
+    vm.collectionPending -> "$size on this device · waiting to sync"
+    vm.collectionCached -> "$size cached · may be out of date"
     else -> size.toString()
 }

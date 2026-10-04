@@ -2,16 +2,16 @@
     <style name="Theme.Marvel" parent="android:style/Theme.Material.Light.NoActionBar">
         <item name="android:fontFamily">@font/space_grotesk</item>
         <item name="android:colorAccent">@color/archive_red</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowActionModeOverlay">true</item>
-        <item name="android:windowBackground">@color/archive_black</item>
+        <item name="android:windowBackground">@color/paper_cream</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/archive_black</item>
     </style>
     <style name="ArchiveTitle">
         <item name="android:fontFamily">@font/bebas_neue</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">48sp</item>
         <item name="android:textColor">@color/ink_black</item>
     </style>
     <style name="SectionTitle">

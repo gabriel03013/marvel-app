@@ -12,16 +12,21 @@ import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 import java.net.URI
 
+enum class ArchiveImageState { LOADING, READY, MISSING, FAILED }
+
 /** Bounded image cache and downsampling keep long archive lists within mobile memory limits. */
 class ArchiveImages {
     private val cache = object : LruCache<String, Bitmap>(16 * 1024 * 1024) {
         override fun sizeOf(key: String, value: Bitmap) = value.byteCount
     }
-    fun load(view: ImageView, url: String, description: String, scope: CoroutineScope) {
+    fun load(view: ImageView, url: String, description: String, scope: CoroutineScope, onState: (ArchiveImageState) -> Unit = {}) {
+        val request = Any()
+        view.setTag(R.id.archive_image_request, request)
         view.contentDescription = if (url.isBlank()) "$description. Image unavailable" else description
         view.setImageResource(R.drawable.ic_dossier)
-        if (url.isBlank()) return
-        cache.get(url)?.let { view.setImageBitmap(it); return }
+        if (url.isBlank()) { onState(ArchiveImageState.MISSING); return }
+        cache.get(url)?.let { view.setImageBitmap(it); onState(ArchiveImageState.READY); return }
+        onState(ArchiveImageState.LOADING)
         scope.launch {
             val bitmap = withContext(Dispatchers.IO) {
                 runCatching {
@@ -47,7 +52,13 @@ class ArchiveImages {
                     } finally { conn.disconnect() }
                 }.getOrNull()
             }
-            if (bitmap != null) view.setImageBitmap(bitmap) else view.contentDescription = "$description. Image unavailable"
+            if(view.getTag(R.id.archive_image_request) !== request) return@launch
+            if (bitmap != null) {
+                view.setImageBitmap(bitmap); onState(ArchiveImageState.READY)
+            } else {
+                view.contentDescription = "$description. Image unavailable"
+                onState(ArchiveImageState.FAILED)
+            }
         }
     }
 }

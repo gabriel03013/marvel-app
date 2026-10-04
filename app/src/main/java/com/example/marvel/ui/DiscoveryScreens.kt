@@ -8,7 +8,7 @@ import com.example.marvel.data.*
 
 fun ScreenRenderer.search() {
     val global = vm.route.screen == "global-search"
-    title(if (global) "Search the archive" else "Find your next recruit")
+    title(if (global) "Quick search" else "Find a character")
     if(vm.submittedQueries["search"] == null && !global) text("Search character names and open their dossiers.")
     val context = "search"
     searchField(context, "Search characters…") { query ->
@@ -23,7 +23,6 @@ fun ScreenRenderer.search() {
         vm.marvelOnly = it == "Marvel"
         vm.notifyChanged()
     }
-    note("Heroes and Villains are unavailable because Comic Vine does not document reliable alignment.")
 
     val submitted = vm.submittedQueries[context]
     if (submitted != null) {
@@ -36,6 +35,7 @@ fun ScreenRenderer.search() {
             note("Search results use Comic Vine relevance order.")
         }
         results("character", submitted)
+        note("Alignment filters are unavailable: Comic Vine does not reliably document heroes and villains.")
         return
     }
 
@@ -62,8 +62,9 @@ fun ScreenRenderer.search() {
         vm.loadPage("character", "")
     }
     section("From your collection")
+    syncStatus()
     vm.favorites.take(3).forEach { character(it) }
-    if (vm.favorites.isEmpty()) {
+    if (vm.favorites.isEmpty() && !vm.collectionLoading && vm.persistenceError == null) {
         text("Favorite a character to keep a dossier close at hand.")
     }
 }
@@ -82,9 +83,9 @@ fun ScreenRenderer.archives() {
         Triple("location", "Locations", "Places and their documented comic connections.")
     )
     categories.forEachIndexed { index, (kind, label, copy) ->
-        category(label, copy, when (index % 3) { 0 -> "blue"; 1 -> "paper"; else -> "yellow" }) {
-            vm.navigate("archive-list", kind)
-        }
+        when(index) { 1 -> section("Abilities & affiliations"); 3 -> section("On the comic shelf"); 6 -> section("People & places") }
+        if(index == 0) category(label, copy, "red") { vm.navigate("archive-list", kind) }
+        else actionRow(label, copy) { vm.navigate("archive-list", kind) }
     }
     section("Featured publisher")
     actionRow("Marvel", "Open the publisher record in Comic Vine.") {
@@ -102,7 +103,7 @@ fun ScreenRenderer.archiveList() {
     val kind = vm.route.kind
     val label = displayKind(ComicVineRepository.plural(kind))
     title("$label archive")
-    text(when (kind) {
+    if(vm.submittedQueries["archive_$kind"] == null) note(when (kind) {
         "power" -> "Explore documented abilities and their linked characters."
         "team" -> "Explore team histories and documented members."
         "story_arc" -> "Follow stories through their connected issues and characters."
@@ -250,8 +251,20 @@ fun ScreenRenderer.imageViewer() {
         actionRow("Return to dossier") { vm.back() }
         return
     }
-    image(item)
-    if (item.image.isBlank()) text("No image available for this record.")
+    val status = text("Loading image…").apply { accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE }
+    val retry = button("Retry image", primary = true) {}.apply { visibility = View.GONE }
+    val update: (ArchiveImageState) -> Unit = { state ->
+        status.visibility = if(state == ArchiveImageState.READY) View.GONE else View.VISIBLE
+        status.text = when(state) {
+            ArchiveImageState.LOADING -> "Loading image…"
+            ArchiveImageState.MISSING -> "No image available for this record."
+            ArchiveImageState.FAILED -> "Could not load this image. Check your connection and retry."
+            ArchiveImageState.READY -> ""
+        }
+        retry.visibility = if(state == ArchiveImageState.FAILED) View.VISIBLE else View.GONE
+    }
+    val picture = image(item, onState = update)
+    retry.setOnClickListener { loadImage(picture, item, update) }
     note("Image supplied by Comic Vine.")
     actionRow("Return to dossier") { vm.back() }
 }
@@ -361,7 +374,7 @@ fun ScreenRenderer.timeline() {
             else -> true
         }
     }
-    if (entries.isEmpty() && !vm.timeline.loading) {
+    if (entries.isEmpty() && !vm.timeline.loading && vm.timeline.error == null) {
         state("No chronological data available", "This record has no issues for the selected filter. Try All or another character.")
     }
     entries.forEach { item ->

@@ -11,16 +11,15 @@ import com.example.marvel.R
 fun ScreenRenderer.emailAuth(host: FrameLayout) {
     val view = activity.layoutInflater.inflate(R.layout.screen_email_auth, host, false)
     host.addView(view)
-    view.findViewById<LinearLayout>(R.id.auth_form_panel).background = CollageSurface(activity, "paper", 1)
     val signup = vm.route.screen == "sign-up"
     val reset = vm.route.screen == "password-reset"
     val fields = listOf("name", "email", "password", "confirm")
     val ids = listOf(R.id.auth_name, R.id.auth_email, R.id.auth_password, R.id.auth_confirm)
     val labels = listOf(R.id.auth_name_label, R.id.auth_email_label, R.id.auth_password_label, R.id.auth_confirm_label)
     val values = listOf(vm.authName, vm.authEmail, vm.authPassword, vm.authConfirmPassword)
-    view.findViewById<TextView>(R.id.auth_title).text = when { signup -> "Create your account"; reset -> "Reset password"; else -> "Welcome back" }
+    view.findViewById<TextView>(R.id.auth_title).text = when { signup -> "Create account"; reset -> "Reset password"; else -> "Welcome back" }
     view.findViewById<TextView>(R.id.auth_copy).text = when {
-        signup -> "Your own archive. Favorites, teams and missions, saved together. Use a password with at least 6 characters."
+        signup -> "Save your favorites, teams and missions. Use at least 6 characters for your password."
         reset -> "Enter your account email. We’ll send a link to choose a new password."
         else -> "Sign in to pick up your next mission."
     }
