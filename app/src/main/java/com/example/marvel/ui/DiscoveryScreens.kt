@@ -175,7 +175,8 @@ fun ScreenRenderer.detail() {
     when (kind) {
         "character" -> {
             section("First appearance")
-            if (first != null) actionRow(first.name, "Open the issue record") { open(first) }
+            if (first != null && first.id > 0) actionRow(first.name, "Open the issue record") { open(first) }
+            else if (first != null) dataPair("First appearance", first.name)
             else text("No data available")
             section("Archive facts")
             dataPair("Issue appearances", item.text("count_of_issue_appearances").ifBlank { "Not documented" })
@@ -194,9 +195,22 @@ fun ScreenRenderer.detail() {
         "team" -> {
             section("Team facts")
             dataPair("Aliases", item.text("aliases").ifBlank { "Not documented" })
-            dataPair("Issue appearances", item.text("count_of_issue_appearances").ifBlank { "Not documented" })
-            if (first != null) actionRow(first.name, "First appearance · Open issue") { open(first) }
-            button("Use this team as inspiration", !vm.operationLoading, primary = true) { vm.inspire(item) }
+            val issues = item.text("count_of_issue_appearances").ifBlank { item.text("count_of_isssue_appearances") }
+            dataPair("Issue appearances", issues.ifBlank { "Not documented" })
+            if (first != null && first.id > 0) actionRow(first.name, "First appearance · Open issue") { open(first) }
+            else if (first != null) dataPair("First appearance", first.name)
+            button("Use this team as inspiration", !vm.operationLoading, primary = true) {
+                if (vm.hasRecruitmentDraft) {
+                    android.app.AlertDialog.Builder(activity)
+                        .setTitle("Replace your active team?")
+                        .setMessage("Using ${item.name} as inspiration clears your current recruitment draft. You can keep it and continue recruiting.")
+                        .setNegativeButton("Keep current team", null)
+                        .setPositiveButton("Use inspiration") { _, _ -> vm.inspire(item) }
+                        .show()
+                } else {
+                    vm.inspire(item)
+                }
+            }
             links("Members", item.related("characters").ifEmpty { item.related("members") })
             links("Issues", item.related("issue_credits"))
             links("Volumes", item.related("volume_credits"))
@@ -211,7 +225,10 @@ fun ScreenRenderer.detail() {
             dataPair("Issue number", item.text("issue_number").ifBlank { "Not documented" })
             dataPair("Cover date", item.text("cover_date").ifBlank { "Not documented" })
             dataPair("Release date", item.text("store_date").ifBlank { "Not documented" })
-            item.reference("volume")?.let { actionRow(it.name, "Open volume") { open(it) } }
+            item.reference("volume")?.let {
+                if (it.id > 0) actionRow(it.name, "Open volume") { open(it) }
+                else dataPair("Volume", it.name)
+            }
             links("Characters appearing", item.related("character_credits"))
             section("Writers and artists")
             val people = item.related("person_credits")
@@ -222,7 +239,10 @@ fun ScreenRenderer.detail() {
             section("Publication facts")
             dataPair("Issues", item.text("count_of_issues").ifBlank { "Not documented" })
             dataPair("Start year", item.text("start_year").ifBlank { "Not documented" })
-            item.reference("publisher")?.let { actionRow(it.name, "Open publisher") { open(it) } }
+            item.reference("publisher")?.let {
+                if (it.id > 0) actionRow(it.name, "Open publisher") { open(it) }
+                else dataPair("Publisher", it.name)
+            }
             links("Issues", item.related("issues"))
             links("Characters", item.related("characters"))
         }
@@ -341,6 +361,11 @@ fun ScreenRenderer.compareResult() {
     section("Differences")
     dataPair("A · ${first.name}", p1.minus(p2).joinToString().ifBlank { "No additional powers documented" })
     dataPair("B · ${second.name}", p2.minus(p1).joinToString().ifBlank { "No additional powers documented" })
+    val allPowers = p1.union(p2)
+    val sharedPowers = p1.intersect(p2)
+    val affinityScore = if (allPowers.isEmpty()) 0 else (sharedPowers.size * 100) / allPowers.size
+    section("App-generated comparison")
+    scorePanel(affinityScore, "${sharedPowers.size} shared of ${allPowers.size} combined documented powers")
     note("This compares Comic Vine records, not combat strength or official Marvel rankings.")
     actionRow("Change characters") { vm.back() }
 }
@@ -360,7 +385,10 @@ fun ScreenRenderer.timeline() {
     character(hero)
     if (vm.timeline.value == null && !vm.timeline.loading && vm.timeline.error == null) vm.loadTimeline()
     if (vm.timeline.loading) state("Building timeline", "Retrieving dated issues. Up to 20 appearances per character.", true)
-    if (vm.timeline.error != null) state("Partial timeline", vm.timeline.error!!, retry = { vm.loadTimeline(true) })
+    if (vm.timeline.error != null) {
+        val errorTitle = if (vm.timeline.value.isNullOrEmpty()) "Signal lost" else "Partial timeline"
+        state(errorTitle, vm.timeline.error!!, retry = { vm.loadTimeline(true) })
+    }
     tabs(listOf("All", "Dated issues", "First appearance"), vm.timelineFilter) {
         vm.timelineFilter = it
         vm.notifyChanged()
@@ -403,9 +431,6 @@ fun ScreenRenderer.related() {
     if (vm.relatedItems.isEmpty()) state("No linked records", "Open a dossier and choose a related section.")
     vm.relatedItems.take(vm.relatedLimit).forEach { character(it) }
     if (vm.relatedItems.size > vm.relatedLimit) {
-        button("Load more linked records") {
-            vm.relatedLimit += 20
-            vm.notifyChanged()
-        }
+        button("Load more linked records") { vm.loadMoreRelated() }
     }
 }

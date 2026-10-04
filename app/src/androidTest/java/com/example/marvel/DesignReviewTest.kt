@@ -78,7 +78,7 @@ class DesignReviewTest {
         }
         instrumentation.waitForIdleSync()
         // Idle does not guarantee that SurfaceFlinger has presented the scrolled frame.
-        if(bottom) { Thread.sleep(350); instrumentation.waitForIdleSync() }
+        Thread.sleep(350); instrumentation.waitForIdleSync()
         val device = InstrumentationRegistry.getArguments().getString("captureClass","phone")
         scenario.onActivity { activity ->
             val scroll = activity.binding.screenHost.findViewById<android.widget.ScrollView>(R.id.page_scroll)

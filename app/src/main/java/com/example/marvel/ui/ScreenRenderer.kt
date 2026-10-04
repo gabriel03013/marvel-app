@@ -215,9 +215,48 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
         block<LinearLayout>(R.layout.row_character).apply {
             tag = "${item.kind}/${item.id}"
             findViewById<TextView>(R.id.record_name).text = item.name
-            val metadata = listOf(item.text("real_name"), item.reference("publisher")?.name.orEmpty(), item.text("cover_date"), item.text("issue_number").takeIf { it.isNotBlank() }?.let { "Issue #$it" }.orEmpty()).filter { it.isNotBlank() }
+            val metadata = when(item.kind) {
+                "team" -> {
+                    val pub = item.reference("publisher")?.name.orEmpty()
+                    val count = item.json.optInt("count_of_team_members").takeIf { it > 0 }
+                        ?: item.related("characters").size.takeIf { it > 0 }
+                    val issues = item.text("count_of_issue_appearances").ifBlank { item.text("count_of_isssue_appearances") }
+                        .takeIf { it.isNotBlank() && it != "0" }?.let { "$it issues" }
+                    val first = item.reference("first_appeared_in_issue")?.name.takeIf { !it.isNullOrBlank() }?.let { "1st: $it" }
+                    listOfNotNull(pub.takeIf { it.isNotBlank() }, count?.let { "$it members" }, issues, first)
+                }
+                "volume" -> {
+                    val pub = item.reference("publisher")?.name.orEmpty()
+                    val year = item.text("start_year").takeIf { it.isNotBlank() }
+                    val count = item.text("count_of_issues").takeIf { it.isNotBlank() && it != "0" }?.let { "$it issues" }
+                    listOfNotNull(pub.takeIf { it.isNotBlank() }, year, count)
+                }
+                "issue" -> {
+                    val vol = item.reference("volume")?.name
+                    val num = item.text("issue_number").takeIf { it.isNotBlank() }?.let { "Issue #$it" }
+                    val date = item.text("cover_date").ifBlank { item.text("store_date") }.takeIf { it.isNotBlank() }
+                    listOfNotNull(vol, num, date)
+                }
+                else -> listOf(
+                    item.text("real_name"),
+                    item.reference("publisher")?.name.orEmpty(),
+                    item.text("cover_date"),
+                    item.text("issue_number").takeIf { it.isNotBlank() }?.let { "Issue #$it" }.orEmpty()
+                ).filter { it.isNotBlank() }
+            }
             findViewById<TextView>(R.id.record_meta).text = metadata.joinToString(" · ").ifBlank { displayKind(item.kind) }
-            findViewById<TextView>(R.id.record_deck).apply { text = plain(item.deck); visibility = if(item.deck.isBlank()) View.GONE else View.VISIBLE }
+            val deckText = if(item.kind == "team") {
+                val cached = vm.details["team/${item.id}"]?.value ?: item
+                val members = cached.related("characters").ifEmpty { cached.related("members") }
+                val preview = if(members.isNotEmpty()) {
+                    "Members: " + members.take(3).joinToString { it.name } + if(members.size > 3) " (+${members.size - 3} more)" else ""
+                } else {
+                    val count = item.json.optInt("count_of_team_members")
+                    if(count > 0) "$count documented members · Open dossier for roster" else "Open dossier for documented members"
+                }
+                if(item.deck.isNotBlank()) "$preview\n${plain(item.deck)}" else preview
+            } else plain(item.deck)
+            findViewById<TextView>(R.id.record_deck).apply { text = deckText; visibility = if(deckText.isBlank()) View.GONE else View.VISIBLE }
             findViewById<TextView>(R.id.record_selected).apply {
                 visibility = if(selected) View.VISIBLE else View.GONE
                 text = if(vm.selectionPurpose == "mission") "Selected · Tap to remove" else "Current selection · Tap to confirm"

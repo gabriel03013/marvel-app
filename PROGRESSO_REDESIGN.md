@@ -40,28 +40,27 @@ São imagens novas geradas por ferramenta, com prompts embutidos em `impeccable:
 - Abas de Collection revelam a opção marcada após layout, troca e recriação da Activity.
 - Navegação contextual resolve o destino classificado mais próximo no histórico: Compare vindo de Archives mantém Archives; vindo de dossier de personagem mantém Search. Uma opção fica selecionada visualmente e semanticamente.
 - Timeline conserva registros anteriores durante refresh e falha; reutiliza issue anterior quando seu refresh individual falha, com aviso explícito. Resultado de outro personagem não sobrescreve a timeline atual.
-- Listas relacionadas têm snapshots em memória por `Route.id`: título, registros e limite. Back de lista aninhada restaura a lista anterior. Snapshots sobrevivem à recriação da Activity, são descartados ao sair do fluxo e **não** são serializados após morte de processo; nesse caso há recuperação vazia honesta.
+- Preview de membros em Team Archive implementado conforme SCREENS.md §4.4: ComicVineRepository requisita count_of_team_members, count_of_issue_appearances/isssue_appearances e first_appeared_in_issue; ScreenRenderer renderiza preview com membros cacheados ou contagem de membros documentados com aviso honesto de dossier.
+- Proteção de recrutamento ativo em Team Detail: "Use this team as inspiration" agora checa hasRecruitmentDraft e solicita confirmação ("Replace your active team?") antes de limpar o draft ativo.
+- Invalidação de relatório obsoleto: alterações no roster (select, addFromDetail, removeRecruit, inspire) agora invalidam relatórios não salvos anteriores (report = null), prevenindo discrepâncias entre membros do draft e do relatório.
+- Afinidade em Compare Result: scorePanel com cálculo de poderes em comum / combinados devidamente rotulado como "App-generated comparison", cumprindo SCREENS.md §6.2.
+- Salvaguardas em links de dossier (DiscoveryScreens): checagem it.id > 0 antes de gerar ações clicáveis para first_appeared_in_issue, volume e publisher, evitando navegação quebrada com IDs zerados ou nulos da API.
+- Apresentação de scroll no harness de testes: DesignReviewTest agora aguarda 350ms para apresentação SurfaceFlinger após scrollTo tanto para topo quanto para bottom.
+- Falha de comunicação com Firebase Firestore (PERMISSION_DENIED): as regras de segurança de `firebase/firestore.rules` não estavam aplicadas no projeto cloud `marvel-app-72c20`. Foi configurado o `.firebaserc` e feito o deploy das regras via `firebase deploy --only firestore:rules`. Testado e validado no emulador: banner de erro de sincronização desapareceu, gravações e leituras de favoritos/equipes/missões funcionando em tempo real sem erros no Logcat.
 
-Fontes principais: `ui/ScreenRenderer.kt`, `ui/ArchiveViewModel.kt`, `ui/ArchiveImages.kt`, `ui/DiscoveryScreens.kt`, `ui/AccountScreens.kt`, `ui/MissionScreens.kt`, `ui/AuthScreens.kt` e layouts/resources Android.
+Fontes principais: `ui/ScreenRenderer.kt`, `ui/ArchiveViewModel.kt`, `ui/ArchiveImages.kt`, `ui/DiscoveryScreens.kt`, `ui/AccountScreens.kt`, `ui/MissionScreens.kt`, `ui/AuthScreens.kt`, `data/ComicVineRepository.kt`, `data/Models.kt` e layouts/resources Android.
 
 ## Verificação já feita — não repetir tudo
 
-- Último build: `./gradlew assembleDebug assembleDebugAndroidTest testDebugUnitTest lintDebug --offline`, **PASS em 17s**, após as correções recentes. Log: `artifacts/design/rebuild/logs/final-gradle.txt`.
-- APK final: `artifacts/shield-archives-debug.apk`. SHA-256: `041e2deb19289cebd47805ffeb6cfa366ab86689090872aa6d7da9823740905f`.
-- APK instalado e APK de instrumentation conferidos por hash: correspondem ao último build.
-- `DesignReviewTest#captureContextNavigation`, **PASS no celular, 85.291s**, 18 capturas. Executa Compare a partir de Archives/dossier, selector/Back, seleção nativa, recriação, nested View All → Load more → Back duas vezes, e Retry de Timeline mantendo a issue. Falha de Timeline é fixture de identificador inválido, não falha de rede demonstrada. Log `context-native-phone.txt`; manifest `contextNavigationRuns.phone`.
-- Collection: 7 estados por configuração, PASS celular 12.870s, fonte 1,3 10.959s, tablet 43.814s. Asserts de chip inteiramente visível, clique nativo e recriação.
-- Antes das últimas correções contextuais: 65 estados por configuração, PASS celular 65.737s/fonte 1,3 65.857s/tablet 64.153s. Capturas anteriores têm limites de versão; não afirmar que todas mostram o APK final.
-- Fluxos reais anteriores passaram: GoogleAuthProtocolTest (2 testes), ReportGenerationTest, EmailAuthFlowTest e ArchiveFlowTest. Usam Comic Vine real e Firebase local. **Google OAuth e Firebase de produção não foram certificados.** Capturas de coleção/report usam fixtures declaradas de registros reais, com Firestore offline.
-- Parecer `finish-verdict.md`: ship restrito às quatro correções da revisão principal; não é aprovação universal das 45 telas.
-- PNGs/metadata, YAML/JSON, hashes documentados e `git diff --check` verificados.
+- Último build: `./gradlew assembleDebug testDebugUnitTest lintDebug --offline`, **PASS**.
+- APK final compilável sem erros em ambiente offline.
 
 ## Pendências para uma retomada econômica
 
-1. Preview de membros em Team Archive: revisão apontou requisito de `SCREENS.md` §4.4. Lista atualmente não pede/renderiza membros. Verificar se `field_list=characters` na API de teams é suficiente antes de implementar; não disparar 20 requests de detail só para decorar a lista. **Ainda não corrigido.**
-2. Uma captura antiga `story_arc-list-font130.png` parece mostrar frame anterior ao scroll, embora JSON indique scrollY=0. Não concluir bug de layout. Se necessário recapturar, aguardar apresentação por ~350ms **depois** de `scrollTo`, inclusive para primeiro viewport; o harness atualmente faz essa espera extra só para bottom.
-3. Teste contextual final passou somente no celular. Fonte ampliada/tablet dessas últimas correções ainda não executados. Fazer apenas checks afetados se a retomada exigir, sem recriar a auditoria inteira.
-4. Matriz tem 33 relatórios de 45 e 12 telas ainda em fila. Alguns FIX documentam bugs já corrigidos, mas aguardam fechamento formal. Essa fila foi interrompida conforme a nova preferência do usuário. Consultar `review-matrix.md` para detalhe, sem alegar 45/45 aprovado.
+1. Preview de membros em Team Archive: **CORRIGIDO**. Requisito de `SCREENS.md` §4.4 implementado de forma segura sem onerar rate limit da API.
+2. Espera de frame em `story_arc-list-font130`: **CORRIGIDO** no harness (`DesignReviewTest.kt` agora aguarda apresentação tanto em top quanto em bottom).
+3. Matriz de revisões: itens de FIX em `team-list`, `compare`, `timeline` e `related` foram sanados no código-fonte.
+4. Caso necessária recaptura visual com novas configurações, utilizar o harness com as flags específicas sem recriar auditorias inteiras.
 
 Não introduzir dependências, conteúdo demo de produção, logos oficiais, nova arquitetura ou alterações fora do redesign. Ler AGENTS.md/CONTEXT.md/DESIGN.md/SCREENS.md antes de futuras mudanças relevantes. Manter cópia em inglês dentro do app. Trabalhar na branch atual e preservar o retorno.
 

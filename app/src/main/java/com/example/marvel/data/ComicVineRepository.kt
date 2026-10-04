@@ -19,7 +19,7 @@ class ComicVineRepository {
         val endpoint = if (query.isNotBlank()) {
             params["query"] = query.trim(); params["resources"] = kind; "search"
         } else { params["sort"] = sort; plural(kind) }
-        params["field_list"] = "id,name,real_name,image,deck,publisher,issue_number,volume,cover_date,start_year,count_of_issues,api_detail_url"
+        params["field_list"] = "id,name,real_name,image,deck,publisher,issue_number,volume,cover_date,start_year,count_of_issues,count_of_team_members,count_of_issue_appearances,count_of_isssue_appearances,first_appeared_in_issue,api_detail_url"
         val json = request(endpoint, params)
         val records = json.optJSONArray("results").items().map { ArchiveItem.fromJson(it, kind) }
         return Page(records, offset, json.optInt("number_of_page_results", records.size), json.optInt("number_of_total_results", records.size))

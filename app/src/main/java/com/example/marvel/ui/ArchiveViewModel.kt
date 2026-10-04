@@ -129,6 +129,11 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
         relatedItems = snapshot?.items ?: emptyList()
         relatedLimit = snapshot?.limit ?: 20
     }
+    fun loadMoreRelated() {
+        relatedLimit += 20
+        saveRelatedContext()
+        notifyChanged()
+    }
     fun back(): Boolean {
         cancelReportGeneration()
         if (route.screen in listOf("sign-in", "email-sign-in", "sign-up", "password-reset")) {
@@ -353,6 +358,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             "compareB" -> { compareB = item; back() }
             "timeline" -> { timelineCharacter = item; timeline = Remote(); back(); loadTimeline() }
             else -> {
+                report = null
                 if (roster.any { it.id == item.id }) roster.removeAll { it.id == item.id }
                 else if (roster.size < mission.size) roster += item else message = "This mission allows up to ${mission.size} members."
             }
@@ -361,12 +367,17 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     }
     fun addFromDetail(item: ArchiveItem) {
         cancelReportGeneration()
-        if (roster.none { it.id == item.id } && roster.size < mission.size) { roster += item; message = "${item.name} added to your active team" }
+        if (roster.none { it.id == item.id } && roster.size < mission.size) {
+            report = null
+            roster += item
+            message = "${item.name} added to your active team"
+        }
         else message = if (roster.any { it.id == item.id }) "Already on your active team" else "Your active team is full. Remove a member in Recruit."
         notifyChanged()
     }
     fun removeRecruit(item: ArchiveItem) {
         cancelReportGeneration()
+        report = null
         roster.removeAll { it.id == item.id }; notifyChanged()
     }
     private fun cancelReportGeneration() {
@@ -429,7 +440,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
                 check(ids.isNotEmpty()) { "No team members are documented in this record." }
                 val members = ids.map { api.detail("character", it.id) }
                 if (user?.uid != uid) return@launch
-                roster.clear(); roster.addAll(members); selectionPurpose = "mission"; navigate("picker")
+                roster.clear(); roster.addAll(members); report = null; selectionPurpose = "mission"; navigate("picker")
             } catch (e: Exception) { if (e is CancellationException && e !is TimeoutCancellationException) throw e; message = e.message }
             finally { operationLoading = false; notifyChanged() }
         }
