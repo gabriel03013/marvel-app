@@ -6,7 +6,7 @@ plugins {
 }
 
 val localConfig = Properties().apply { rootProject.file("local.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }
-val comicVineKey = (localConfig.getProperty("COMIC_VINE_API_KEY") ?: System.getenv("COMIC_VINE_API_KEY") ?: "").replace("\\", "\\\\").replace("\"", "\\\"")
+val comicVineKey = (localConfig.getProperty("COMIC_VINE_API_KEY") ?: System.getenv("COMIC_VINE_API_KEY") ?: "").trim().replace("\\", "\\\\").replace("\"", "\\\"")
 
 android {
     namespace = "com.example.marvel"

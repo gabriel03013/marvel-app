@@ -49,7 +49,11 @@ class ComicVineRepository {
                 else -> error("The archive server is unavailable. Try again shortly.")
             }
             val j = JSONObject(conn.inputStream.bufferedReader().use { it.readText() })
-            check(j.optInt("status_code") == 1) { "Comic Vine could not complete this request. Check your configuration and retry." }
+            check(j.optInt("status_code") == 1) {
+                val providerError = j.optString("error").takeUnless { it.isBlank() || it == "null" || it == "OK" }
+                if (providerError == null) "Comic Vine could not complete this request. Check the API key and request, then retry."
+                else "Comic Vine rejected this request ($providerError). Check the API key and retry."
+            }
             j
         } catch (e: SocketTimeoutException) { throw IOException("The archive took too long to respond. Check your connection and retry.", e) }
         catch (e: IOException) { throw IOException("Cannot reach Comic Vine. Check your connection and retry.", e) }

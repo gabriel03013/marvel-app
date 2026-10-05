@@ -49,6 +49,7 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             "briefing" -> briefing()
             "picker", "character-select" -> picker()
             "assembly" -> assembly()
+            "simulation" -> simulation()
             "report", "saved-team" -> report()
             "collection", "favorites", "saved-teams", "mission-history", "recent" -> collection()
             "profile", "first-run-profile" -> profile()
@@ -64,7 +65,7 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
         val tabs = listOf(Triple("home", "Home", R.drawable.ic_home), Triple("search", "Search", R.drawable.ic_search), Triple("recruit", "Recruit", R.drawable.ic_recruit), Triple("archives", "Archives", R.drawable.ic_archives), Triple("collection", "Collection", R.drawable.ic_collection))
         fun destination(route: Route): String? = when(route.screen) {
             "home", "search", "recruit", "archives", "collection" -> route.screen
-            "briefing", "picker", "assembly", "report" -> "recruit"
+            "briefing", "picker", "assembly", "simulation", "report" -> "recruit"
             "archive-list", "detail", "image" -> if(route.kind == "character") "search" else "archives"
             "saved-team", "favorites", "saved-teams", "mission-history", "recent" -> "collection"
             else -> null
@@ -112,9 +113,9 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     }
     fun title(value: String): TextView {
         val panel = block<LinearLayout>(R.layout.block_cover)
-        val compact = vm.route.screen in listOf("global-search", "detail", "image", "archive-list", "related", "picker", "character-select") || (vm.route.screen == "search" && vm.submittedQueries["search"] != null)
+        val compact = vm.route.screen in listOf("global-search", "detail", "image", "archive-list", "related", "picker", "character-select", "simulation") || (vm.route.screen == "search" && vm.submittedQueries["search"] != null)
         panel.findViewById<CollageArtView>(R.id.cover_art).apply {
-            variant = if(vm.route.screen in listOf("recruit", "briefing", "assembly", "report", "saved-team", "archives")) 2 else 0
+            variant = if(vm.route.screen in listOf("recruit", "briefing", "assembly", "simulation", "report", "saved-team", "archives")) 2 else 0
             layoutParams.height = dp(if(compact) 80 else 112)
             layoutParams.width = dp(if(compact) 88 else 112)
         }

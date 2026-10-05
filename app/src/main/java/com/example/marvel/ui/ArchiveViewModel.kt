@@ -64,6 +64,12 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
         set(value) { if(field != value) cancelReportGeneration(); field = value }
     val hasRecruitmentDraft get() = roster.isNotEmpty() || teamName.isNotBlank() || (mission.id == "custom" && customBriefing.isNotBlank())
     var report: SavedTeam? = null
+    var teamSuggestion: Remote<TeamSuggestion> = Remote()
+    var graphExpanded = false
+    var graphRecordKey = ""
+    var simulationSource: SavedTeam? = null
+    var simulationError: String? = null
+    var revealedReportId: String? = null
     var compareA: ArchiveItem? = null
     var compareB: ArchiveItem? = null
     var selectionPurpose = "mission"
@@ -350,7 +356,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             notifyChanged()
         }
     }
-    fun startMission(template: Mission) { cancelReportGeneration(); mission = template; roster.clear(); teamName = ""; customBriefing = ""; report = null; navigate("briefing", id = template.id) }
+    fun startMission(template: Mission) { cancelReportGeneration(); mission = template; roster.clear(); teamName = ""; customBriefing = ""; report = null; teamSuggestion = Remote(); simulationSource = null; navigate("briefing", id = template.id) }
     fun select(item: ArchiveItem) {
         cancelReportGeneration()
         when(selectionPurpose) {
@@ -359,6 +365,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             "timeline" -> { timelineCharacter = item; timeline = Remote(); back(); loadTimeline() }
             else -> {
                 report = null
+                teamSuggestion = Remote()
                 if (roster.any { it.id == item.id }) roster.removeAll { it.id == item.id }
                 else if (roster.size < mission.size) roster += item else message = "This mission allows up to ${mission.size} members."
             }
@@ -367,6 +374,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     }
     fun addFromDetail(item: ArchiveItem) {
         cancelReportGeneration()
+        teamSuggestion = Remote()
         if (roster.none { it.id == item.id } && roster.size < mission.size) {
             report = null
             roster += item
@@ -377,8 +385,84 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     }
     fun removeRecruit(item: ArchiveItem) {
         cancelReportGeneration()
+        teamSuggestion = Remote()
         report = null
         roster.removeAll { it.id == item.id }; notifyChanged()
+    }
+    fun suggestMissionTeam() {
+        if (teamSuggestion.loading) return
+        val origin = route
+        teamSuggestion = Remote(teamSuggestion.value, true)
+        notifyChanged()
+        viewModelScope.launch {
+            val candidates = (favorites + recent + roster + pages.values.flatMap { it.value?.items.orEmpty() })
+                .filter { it.kind == "character" && it.id > 0 }.distinctBy { it.id }.take(12)
+            if (candidates.isEmpty()) {
+                teamSuggestion = Remote(error = "Search for characters or save favorites first, then ask for a suggestion.")
+                notifyChanged(); return@launch
+            }
+            val dossiers = mutableListOf<ArchiveItem>()
+            var failures = 0
+            for (candidate in candidates) {
+                if (route != origin) { teamSuggestion = Remote(); notifyChanged(); return@launch }
+                try { dossiers += api.detail("character", candidate.id) } catch (e: Exception) {
+                    if (e is CancellationException && e !is TimeoutCancellationException) throw e
+                    failures++
+                }
+            }
+            if (route != origin) { teamSuggestion = Remote(); notifyChanged(); return@launch }
+            val result = suggestTeam(dossiers, mission)
+            pendingSuggestionIds = result.members.map { it.id }.toMutableSet()
+            teamSuggestion = if (dossiers.isEmpty()) Remote(error = "Character dossiers could not be loaded. Retry or continue recruiting manually.")
+                else Remote(result, error = if (result.members.isEmpty()) "The loaded dossiers do not contain enough documented power data for this mission. You can continue manually." else if (failures > 0) "Some dossiers could not be loaded. This suggestion uses the available records." else null)
+            notifyChanged()
+        }
+    }
+    fun acceptSuggestion() {
+        val suggested = teamSuggestion.value ?: return
+        if (suggested.members.isEmpty()) return
+        roster.clear(); roster.addAll(suggested.members.take(mission.size)); report = null
+        message = "Suggested roster added. Review, remove, or add members before continuing."
+        notifyChanged()
+    }
+    private var pendingSuggestionIds = mutableSetOf<Int>()
+    fun reviseSuggestedMember(item: ArchiveItem) {
+        val suggestion = teamSuggestion.value ?: return
+        if (!pendingSuggestionIds.add(item.id)) pendingSuggestionIds.remove(item.id)
+        if (pendingSuggestionIds.size > mission.size) {
+            pendingSuggestionIds.remove(item.id)
+            message = "This mission allows up to ${mission.size} members in a suggested roster."
+        }
+        teamSuggestion = teamSuggestion.copy(value = reviseSuggestion(suggestion, pendingSuggestionIds, mission))
+        notifyChanged()
+    }
+    fun runSimulation() {
+        if (roster.isEmpty() || operationLoading) return
+        simulationError = null
+        val missionCopy = mission
+        val origin = route
+        val ids = roster.map { it.id }
+        operationLoading = true; notifyChanged()
+        viewModelScope.launch {
+            try {
+                val members = ids.map { api.detail("character", it) }
+                if (route != origin || mission != missionCopy || roster.map { it.id } != ids) return@launch
+                roster.clear(); roster.addAll(members)
+                simulationSource = SavedTeam("simulation", teamName.ifBlank { "Untitled team" }, missionCopy.id,
+                    if (missionCopy.id == "custom") customBriefing else missionCopy.description, members, System.currentTimeMillis())
+                navigate("simulation")
+            } catch (e: Exception) {
+                if (e is CancellationException && e !is TimeoutCancellationException) throw e
+                simulationError = "Simulation could not retrieve all dossiers. Check your connection and retry."
+                message = simulationError
+            } finally { operationLoading = false; notifyChanged() }
+        }
+    }
+    fun createReportFromSimulation() {
+        val source = simulationSource ?: return
+        if (teamName.isBlank()) { message = "Name your team before generating the mission report."; notifyChanged(); return }
+        report = source.copy(id = UUID.randomUUID().toString(), name = teamName.trim(), createdAt = System.currentTimeMillis())
+        navigate("report", id = report!!.id)
     }
     private fun cancelReportGeneration() {
         reportAttempt++

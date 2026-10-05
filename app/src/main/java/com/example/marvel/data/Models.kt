@@ -12,7 +12,7 @@ data class ArchiveItem(val id: Int, val kind: String, val name: String, val imag
     fun map(): Map<String, Any> {
         // Save report evidence rather than enormous issue-credit/description payloads.
         val snapshot = JSONObject()
-        for (key in listOf("id", "name", "real_name", "publisher", "origin", "powers", "teams", "first_appeared_in_issue", "count_of_issue_appearances", "count_of_isssue_appearances", "count_of_team_members", "characters", "members")) {
+        for (key in listOf("id", "name", "real_name", "publisher", "origin", "powers", "teams", "first_appeared_in_issue", "count_of_issue_appearances", "count_of_isssue_appearances", "count_of_team_members", "characters", "members", "cover_date", "start_year")) {
             if (json.has(key)) snapshot.put(key, json.opt(key))
         }
         return mapOf("id" to id, "kind" to kind, "name" to name, "image" to image, "deck" to deck.take(1200), "raw" to snapshot.toString())

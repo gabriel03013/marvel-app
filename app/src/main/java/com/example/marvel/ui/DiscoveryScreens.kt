@@ -2,6 +2,8 @@ package com.example.marvel.ui
 
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.marvel.R
 import com.example.marvel.data.*
@@ -127,6 +129,7 @@ fun ScreenRenderer.detail() {
     val kind = vm.route.kind
     val id = vm.route.id.toIntOrNull() ?: 0
     val key = "$kind/$id"
+    if (vm.graphRecordKey != key) { vm.graphRecordKey = key; vm.graphExpanded = false }
     if (vm.details[key] == null) vm.loadDetail(kind, id)
     val remote = vm.details[key]
     title(remote?.value?.name ?: if (kind == "character") "Hero diary" else "${displayKind(kind)} dossier")
@@ -174,6 +177,48 @@ fun ScreenRenderer.detail() {
     val first = item.reference("first_appeared_in_issue")
     when (kind) {
         "character" -> {
+            val connections = buildList {
+                item.related("powers").forEach { add(ConnectionNode("Power", it)) }
+                item.related("teams").forEach { add(ConnectionNode("Team", it)) }
+                item.related("character_friends").forEach { add(ConnectionNode("Ally", it)) }
+                item.related("character_enemies").forEach { add(ConnectionNode("Enemy", it)) }
+                item.reference("publisher")?.takeIf { it.id > 0 }?.let { add(ConnectionNode("Publisher", it)) }
+                first?.takeIf { it.id > 0 }?.let { add(ConnectionNode("First issue", it)) }
+                item.related("story_arc_credits").forEach { add(ConnectionNode("Story arc", it)) }
+                item.related("issue_credits").forEach { add(ConnectionNode("Issue", it)) }
+                item.related("volume_credits").forEach { add(ConnectionNode("Volume", it)) }
+            }.filter { it.item.id > 0 }.distinctBy { "${it.item.kind}/${it.item.id}" }
+            section("Explore connections")
+            if (connections.isEmpty()) {
+                state("No connections documented", "Comic Vine does not document enough direct relationships in this dossier to draw a connection map.")
+            } else {
+                val shown = connections.take(if (vm.graphExpanded) 24 else 8)
+                content.addView(ConnectionGraphView(activity).apply {
+                    centerLabel = item.name
+                    nodes = shown
+                    onNodeClick = { open(it) }
+                }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(176)).apply { bottomMargin = dp(8) })
+                note("Connections shown from this Comic Vine dossier · up to 24 direct records. Tap a node or use the record list.")
+                val relationKinds = shown.map { it.relation }.distinct()
+                dataPair("Legend", relationKinds.joinToString(" · "))
+                section("Connection records")
+                shown.forEach { edge -> actionRow(edge.item.name, edge.relation) { open(edge.item) } }
+                if (!vm.graphExpanded && connections.size > shown.size) button("Show more connections (${connections.size - shown.size} remaining)") { vm.graphExpanded = true; vm.notifyChanged() }
+                else if (vm.graphExpanded && connections.size > 8) actionRow("Show fewer connections") { vm.graphExpanded = false; vm.notifyChanged() }
+            }
+            section("Archive intelligence")
+            val metrics = buildList {
+                item.related("powers").count { it.id > 0 }.takeIf { it > 0 }?.let { add(ArchiveMetric("Powers listed", it)) }
+                item.related("teams").count { it.id > 0 }.takeIf { it > 0 }?.let { add(ArchiveMetric("Teams linked", it)) }
+                item.text("count_of_issue_appearances").toIntOrNull()?.takeIf { it >= 0 }?.let { add(ArchiveMetric("Issue appearances", it)) }
+                item.text("count_of_isssue_appearances").toIntOrNull()?.takeIf { count -> count >= 0 && none { it.label == "Issue appearances" } }?.let { add(ArchiveMetric("Issue appearances", it)) }
+            }
+            if (metrics.isEmpty() && first == null) text("No numeric archive counts or first appearance are documented in this dossier.")
+            else {
+                if (metrics.isNotEmpty()) content.addView(ArchiveMetricsView(activity).apply { this.metrics = metrics }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp(metrics.size * 44).coerceAtLeast(48)))
+                first?.let { dataPair("First appearance", it.name) }
+                note("Counts reflect the data included in this Comic Vine dossier and may be incomplete. They describe archive records, not character strength.")
+            }
             section("First appearance")
             if (first != null && first.id > 0) actionRow(first.name, "Open the issue record") { open(first) }
             else if (first != null) dataPair("First appearance", first.name)

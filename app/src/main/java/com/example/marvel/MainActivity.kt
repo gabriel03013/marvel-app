@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
         binding.topBar.visibility = if (public) View.GONE else View.VISIBLE
         binding.bottomNav.visibility = if (public) View.GONE else View.VISIBLE
         binding.backButton.visibility = if (model.stack.size > 1 || route.screen !in listOf("home", "search", "recruit", "archives", "collection")) View.VISIBLE else View.INVISIBLE
-        binding.topTitle.text = when(route.screen) { "detail" -> "HERO & ARCHIVE DOSSIER"; "report", "saved-team" -> "MISSION REPORT"; else -> "S.H.I.E.L.D. ARCHIVES" }
+        binding.topTitle.text = when(route.screen) { "detail" -> "HERO & ARCHIVE DOSSIER"; "simulation" -> "MISSION SIMULATION"; "report", "saved-team" -> "MISSION REPORT"; else -> "S.H.I.E.L.D. ARCHIVES" }
         renderer.renderNavigation(binding.bottomNav)
         renderer.render(binding.screenHost)
         if(!sameScreen) { binding.screenHost.isFocusableInTouchMode = true; binding.screenHost.requestFocus() }
@@ -167,8 +167,20 @@ class MainActivity : ComponentActivity() {
     fun share(team: SavedTeam) {
         val template = missions.firstOrNull { it.id == team.missionId } ?: missions.last()
         val result = evaluate(team.members, template)
-        val text = "${team.name}\n${template.title}\n${team.briefing}\n\n" + team.members.joinToString("\n") { "${it.name}: ${it.related("powers").joinToString { p -> p.name }.ifBlank { "Powers not documented" }}" } + "\n\nApp-generated evaluation: ${result.score}/100. Based on roster coverage, documented power diversity and mission fit; not official Marvel statistics. Data: Comic Vine."
-        startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_TEXT, text) }, "Share team report"))
+        val uncovered = template.focus.filterNot { focus -> result.matchedFocus.any { it.equals(focus, true) } }
+        val roster = team.members.joinToString("\n") { member ->
+            val powers = member.related("powers").joinToString { it.name }.ifBlank { "Not documented" }
+            val teams = member.related("teams").joinToString { it.name }.ifBlank { "Not documented" }
+            "• ${member.name}\n  Documented powers: $powers\n  Documented teams: $teams"
+        }
+        val text = "S.H.I.E.L.D. ARCHIVES · MISSION BRIEFING\n\n" +
+            "TEAM\n${team.name}\n\nMISSION OBJECTIVE\n${team.briefing.ifBlank { template.description }}\n\n" +
+            "ROSTER AND COMIC VINE EVIDENCE\n$roster\n\n" +
+            "SUGGESTED ABILITY COVERAGE\nCovered: ${result.matchedFocus.joinToString().ifBlank { "None documented" }}\n" +
+            "Uncovered: ${uncovered.joinToString().ifBlank { if (template.focus.isEmpty()) "No preset abilities" else "All suggested abilities" }}\n\n" +
+            "APP-GENERATED TACTICAL EVALUATION\n${result.score}/100 · ${result.knownMembers}/${team.members.size} dossiers include documented powers · ${result.uniquePowers.size} distinct powers\n" +
+            "This reproducible evaluation uses roster coverage, documented power diversity and mission fit. It is not canonical, predictive or an official Marvel statistic. Saved reports are snapshots. Source: Comic Vine."
+        startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).apply { type = "text/plain"; putExtra(Intent.EXTRA_SUBJECT, "${team.name} · ${template.title}"); putExtra(Intent.EXTRA_TEXT, text) }, "Share mission briefing"))
     }
     override fun onStop() { if(archiveReady) model.persistDraft(); super.onStop() }
     override fun onSaveInstanceState(outState: Bundle) {
