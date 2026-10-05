@@ -66,6 +66,8 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     var report: SavedTeam? = null
     var compareA: ArchiveItem? = null
     var compareB: ArchiveItem? = null
+    var investigateA: ArchiveItem? = null
+    var investigateB: ArchiveItem? = null
     var selectionPurpose = "mission"
     var timelineCharacter: ArchiveItem? = null
     var relatedItems = emptyList<ArchiveItem>()
@@ -98,7 +100,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             user = next; sessionUid = next?.uid
             listeners.forEach { it.remove() }; listeners.clear()
             favorites = emptyList(); teams = emptyList(); history = emptyList(); recent = emptyList(); searches = emptyList()
-            roster.clear(); report = null; compareA = null; compareB = null; timelineCharacter = null
+            roster.clear(); report = null; compareA = null; compareB = null; investigateA = null; investigateB = null; timelineCharacter = null
             queries.clear(); submittedQueries.clear(); marvelOnly = false; selectionPurpose = "mission"; relatedItems = emptyList(); relatedSnapshots.clear(); timeline = Remote()
             persistenceError = null; cachedCollections.clear(); pendingCollections.clear()
             stack.clear(); stack += Route(if (next == null) "welcome" else "home")
@@ -356,6 +358,8 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
         when(selectionPurpose) {
             "compareA" -> { compareA = item; back() }
             "compareB" -> { compareB = item; back() }
+            "investigateA" -> { investigateA = item; back() }
+            "investigateB" -> { investigateB = item; back() }
             "timeline" -> { timelineCharacter = item; timeline = Remote(); back(); loadTimeline() }
             else -> {
                 report = null
@@ -493,6 +497,8 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             .put("roster", JSONArray(roster.map { JSONObject(it.map()) }))
         compareA?.let { draft.put("compareA", JSONObject(it.map())) }
         compareB?.let { draft.put("compareB", JSONObject(it.map())) }
+        investigateA?.let { draft.put("investigateA", JSONObject(it.map())) }
+        investigateB?.let { draft.put("investigateB", JSONObject(it.map())) }
         report?.let { draft.put("report", JSONObject(it.map()).put("id", it.id)) }
         prefs.edit().putString("draft_$uid", draft.toString()).apply()
     }
@@ -504,6 +510,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
             fun item(j: JSONObject) = ArchiveItem.fromMap(j.keys().asSequence().associateWith { j.opt(it) })
             roster.clear(); roster.addAll(draft.optJSONArray("roster").items().map(::item))
             compareA = draft.optJSONObject("compareA")?.let(::item); compareB = draft.optJSONObject("compareB")?.let(::item)
+            investigateA = draft.optJSONObject("investigateA")?.let(::item); investigateB = draft.optJSONObject("investigateB")?.let(::item)
             draft.optJSONObject("report")?.let { j ->
                 report = SavedTeam(j.optString("id"), j.optString("name"), j.optString("missionId"), j.optString("briefing"), j.optJSONArray("members").items().map(::item), j.optLong("createdAt"))
             }

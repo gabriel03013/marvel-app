@@ -72,3 +72,104 @@ fun suggestedRole(item: ArchiveItem): String {
         else -> "Role not inferred from available powers"
     }
 }
+
+enum class DirectRelation {
+    ARCH_RIVALS,
+    DIRECT_ALLIES,
+    NONE
+}
+
+data class ConnectionAnalysis(
+    val agentA: ArchiveItem,
+    val agentB: ArchiveItem,
+    val directRelation: DirectRelation,
+    val sharedTeams: List<ArchiveItem>,
+    val sharedStoryArcs: List<ArchiveItem>,
+    val sharedFriends: List<ArchiveItem>,
+    val sharedEnemies: List<ArchiveItem>,
+    val degreeOfSeparation: Int,
+    val convergenceScore: Int,
+    val tacticalAssessment: String
+)
+
+fun analyzeConnections(a: ArchiveItem, b: ArchiveItem): ConnectionAnalysis {
+    val aEnemies = a.related("character_enemies")
+    val bEnemies = b.related("character_enemies")
+    val aFriends = a.related("character_friends")
+    val bFriends = b.related("character_friends")
+    val aTeams = a.related("teams")
+    val bTeams = b.related("teams")
+    val aArcs = a.related("story_arc_credits")
+    val bArcs = b.related("story_arc_credits")
+
+    val isRivals = aEnemies.any { it.id == b.id || it.name.equals(b.name, true) } ||
+            bEnemies.any { it.id == a.id || it.name.equals(a.name, true) }
+
+    val isAllies = !isRivals && (aFriends.any { it.id == b.id || it.name.equals(b.name, true) } ||
+            bFriends.any { it.id == a.id || it.name.equals(a.name, true) })
+
+    val directRelation = when {
+        isRivals -> DirectRelation.ARCH_RIVALS
+        isAllies -> DirectRelation.DIRECT_ALLIES
+        else -> DirectRelation.NONE
+    }
+
+    val sharedTeams = aTeams.filter { at -> bTeams.any { bt -> (bt.id > 0 && bt.id == at.id) || bt.name.equals(at.name, true) } }
+        .distinctBy { it.name.lowercase() }
+
+    val sharedStoryArcs = aArcs.filter { aa -> bArcs.any { ba -> (ba.id > 0 && ba.id == aa.id) || ba.name.equals(aa.name, true) } }
+        .distinctBy { it.name.lowercase() }
+
+    val sharedFriends = aFriends.filter { af -> bFriends.any { bf -> (bf.id > 0 && bf.id == af.id) || bf.name.equals(af.name, true) } }
+        .distinctBy { it.name.lowercase() }
+
+    val sharedEnemies = aEnemies.filter { ae -> bEnemies.any { be -> (be.id > 0 && be.id == ae.id) || be.name.equals(ae.name, true) } }
+        .distinctBy { it.name.lowercase() }
+
+    val degree = when {
+        a.id == b.id -> 0
+        directRelation != DirectRelation.NONE || sharedTeams.isNotEmpty() -> 1
+        sharedStoryArcs.isNotEmpty() || sharedFriends.isNotEmpty() || sharedEnemies.isNotEmpty() -> 2
+        else -> 3
+    }
+
+    val directPoints = if (directRelation != DirectRelation.NONE) 30 else 0
+    val teamPoints = (sharedTeams.size * 10).coerceAtMost(30)
+    val arcPoints = (sharedStoryArcs.size * 5).coerceAtMost(20)
+    val contactPoints = ((sharedFriends.size + sharedEnemies.size) * 4).coerceAtMost(20)
+    val convergenceScore = (directPoints + teamPoints + arcPoints + contactPoints).coerceIn(0, 100)
+
+    val assessment = when {
+        a.id == b.id -> "Identical operative dossier. No cross-reference required."
+        directRelation == DirectRelation.ARCH_RIVALS ->
+            "CRITICAL CANONICAL CONFLICT. Documented field dossiers confirm direct hostility between ${a.name} and ${b.name}. Extreme caution advised if deployed in proximity."
+        directRelation == DirectRelation.DIRECT_ALLIES && sharedTeams.isNotEmpty() ->
+            "TRUSTED COMBAT OPERATIVES. Documented direct allies with shared service in ${sharedTeams.first().name}. High operational synergy."
+        directRelation == DirectRelation.DIRECT_ALLIES ->
+            "DOCUMENTED CANONICAL ALLIES. Field records establish personal trust and cooperative history between these operatives."
+        sharedTeams.isNotEmpty() ->
+            "SHARED TASKFORCE COMBAT HISTORY. Both operatives have co-served within documented teams (${sharedTeams.take(2).joinToString { it.name }})."
+        sharedStoryArcs.isNotEmpty() ->
+            "MUTUAL CRISIS VETERANS. Operatives participated in the same documented major comic events (${sharedStoryArcs.take(2).joinToString { it.name }})."
+        sharedFriends.isNotEmpty() ->
+            "SHARED CONTACT NETWORK. Mutual allies (${sharedFriends.take(2).joinToString { it.name }}) establish second-degree operational overlap."
+        sharedEnemies.isNotEmpty() ->
+            "SHARED ADVERSARIES. Both operatives have engaged common hostiles (${sharedEnemies.take(2).joinToString { it.name }})."
+        else ->
+            "COMPARTMENTALIZED DOSSIERS. No direct tactical overlap or mutual taskforces documented in Comic Vine archives."
+    }
+
+    return ConnectionAnalysis(
+        agentA = a,
+        agentB = b,
+        directRelation = directRelation,
+        sharedTeams = sharedTeams,
+        sharedStoryArcs = sharedStoryArcs,
+        sharedFriends = sharedFriends,
+        sharedEnemies = sharedEnemies,
+        degreeOfSeparation = degree,
+        convergenceScore = convergenceScore,
+        tacticalAssessment = assessment
+    )
+}
+

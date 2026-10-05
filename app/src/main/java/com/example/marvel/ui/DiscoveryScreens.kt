@@ -92,6 +92,7 @@ fun ScreenRenderer.archives() {
         vm.navigate("detail", "publisher", "31")
     }
     section("Research tools")
+    actionRow("Investigation board", "Cross-reference classified ties between two agents.") { vm.navigate("investigate") }
     actionRow("Compare characters", "Place two dossiers side by side.") { vm.navigate("compare") }
     actionRow("Character timeline", "Follow appearances with documented dates.") { vm.navigate("timeline") }
     section("Recently viewed")
@@ -145,6 +146,10 @@ fun ScreenRenderer.detail() {
         }.apply {
             isEnabled = !vm.operationLoading
             alpha = if (isEnabled) 1f else .55f
+        }
+        actionRow("Investigate connections", "Cross-reference ties with another agent.") {
+            vm.investigateA = item
+            vm.navigate("investigate")
         }
         actionRow("Compare", "Place this dossier beside another character.") {
             vm.compareA = item

@@ -56,6 +56,8 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             "compare" -> compareSetup()
             "compare-result" -> compareResult()
             "timeline" -> timeline()
+            "investigate" -> investigateSetup()
+            "investigate-board" -> investigateBoard()
             else -> state("Dossier unavailable", "Return to the archive and select a record.", retry = { vm.destination("home") })
         }
     }
@@ -66,6 +68,7 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             "home", "search", "recruit", "archives", "collection" -> route.screen
             "briefing", "picker", "assembly", "report" -> "recruit"
             "archive-list", "detail", "image" -> if(route.kind == "character") "search" else "archives"
+            "compare", "compare-result", "timeline", "investigate", "investigate-board" -> "archives"
             "saved-team", "favorites", "saved-teams", "mission-history", "recent" -> "collection"
             else -> null
         }
@@ -349,6 +352,8 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
     fun isCandidateSelected(item: ArchiveItem): Boolean = when(vm.selectionPurpose) {
         "compareA" -> vm.compareA?.id == item.id
         "compareB" -> vm.compareB?.id == item.id
+        "investigateA" -> vm.investigateA?.id == item.id
+        "investigateB" -> vm.investigateB?.id == item.id
         "timeline" -> vm.timelineCharacter?.id == item.id
         else -> vm.roster.any { it.id == item.id }
     }
