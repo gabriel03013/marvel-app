@@ -21,11 +21,13 @@ The current local debug certificate SHA-1 is `BE:1F:84:65:7A:28:35:BC:72:5F:11:6
 
 4. Create a Cloud Firestore database. Review and publish `firebase/firestore.rules` so each user can access only their own documents.
 
-The project originally had only the debug SHA-256 registered and a web OAuth client in the local JSON. The debug SHA-1 above is now registered through the authenticated Firebase CLI, and `app/google-services.json` has been refreshed and checked to contain both Android (type 1, matching that SHA-1) and web (type 3) OAuth clients. Google and Email/Password are confirmed enabled through the project admin configuration. A real Google login still needs to be checked on a device with a Google account using the rebuilt app. No production anonymous login exists.
+The project originally had only the debug SHA-256 registered and a web OAuth client in the local JSON. The debug SHA-1 above is now registered through the authenticated Firebase CLI, and `app/google-services.json` has been refreshed and checked to contain both Android (type 1, matching that SHA-1) and web (type 3) OAuth clients. Google and Email/Password were confirmed enabled through the project admin configuration. A real Google login still needs to be checked on a device with a Google account using the rebuilt app.
 
 ## Email/password login and signup
 
 Enable **Authentication → Sign-in method → Email/Password → Email/Password** in the same Firebase project (passwordless email-link sign-in is not needed). Without this setting, Firebase rejects signup/login even though the native forms are available. See [Firebase password authentication](https://firebase.google.com/docs/auth/android/password-auth).
+
+Welcome also offers **Continue as guest**. Enable **Authentication → Sign-in method → Anonymous** in the same Firebase project to use it. Guest profiles and saved collection data are stored under that anonymous Firebase UID. Signing out ends access to that guest archive; the app asks for confirmation first. If Anonymous is disabled, Firebase returns an unavailable-method message and the user can choose Google or email instead.
 
 Welcome offers Google, email sign-in and account creation. Signup collects agent name, email, password and confirmation, creates the Firebase account, updates its name and persists the profile through the existing user repository. Existing users sign in to their own collection. Forgot Password sends Firebase’s reset email and displays a neutral confirmation. Inputs survive rotation/retries in memory; passwords are never saved in preferences or instance-state bundles and are cleared after authentication or leaving the form.
 
@@ -52,7 +54,7 @@ The existing Android 36.1 SDK is retained; AndroidX versions were selected to co
 
 ## Integration verification
 
-`EmailAuthFlowTest` checks signup, invalid email, password confirmation, rotation, Firestore profile persistence, sign-out, incorrect-password recovery, password reset, successful email login, leaving a pending login with Back and retrying without an unwanted late session against local emulators. Run it with the same command below, replacing the class name with `com.example.marvel.EmailAuthFlowTest`.
+`EmailAuthFlowTest` checks signup, invalid email, password confirmation, rotation, Firestore profile persistence, sign-out, incorrect-password recovery, password reset, successful email login, leaving a pending login with Back and retrying without an unwanted late session against local emulators. `AnonymousAuthFlowTest` checks guest entry and profile persistence. Run instrumented tests with the local Auth and Firestore emulators started and an Android emulator/device connected, for example `./gradlew :app:connectedDebugAndroidTest`.
 
 `ArchiveFlowTest` uses real Comic Vine records and **local Firebase emulators**. It signs into an isolated emulator user; it does not create a production account. Start Auth on port 9099 and Firestore on 8080, then run:
 

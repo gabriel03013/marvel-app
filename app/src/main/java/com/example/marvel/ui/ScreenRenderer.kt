@@ -93,7 +93,7 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
             view.findViewById<LinearLayout>(R.id.welcome_content)?.layoutParams = LinearLayout.LayoutParams(dp(520), ViewGroup.LayoutParams.WRAP_CONTENT).apply { gravity = android.view.Gravity.CENTER_HORIZONTAL }
         }
         view.findViewById<Button>(R.id.sign_in).apply {
-            text = if(vm.authBusy) "Please wait…" else if(vm.authError != null) "Retry Google sign-in" else "Continue with Google"
+            text = if(vm.authBusy) "Please wait…" else if(vm.authError != null && vm.authErrorSource == "google") "Retry Google sign-in" else "Continue with Google"
             isEnabled = !vm.authBusy
             setOnClickListener { if(vm.route.screen == "welcome") vm.navigate("sign-in"); activity.signIn() }
         }
@@ -104,6 +104,11 @@ class ScreenRenderer(val activity: MainActivity, val vm: ArchiveViewModel) {
         view.findViewById<Button>(R.id.create_account).apply {
             isEnabled = !vm.authBusy
             setOnClickListener { vm.openAuth("sign-up") }
+        }
+        view.findViewById<Button>(R.id.anonymous_sign_in).apply {
+            text = if(vm.authBusy) "Please wait…" else if(vm.authError != null && vm.authErrorSource == "anonymous") "Retry guest access" else activity.getString(R.string.anonymous_sign_in)
+            isEnabled = !vm.authBusy
+            setOnClickListener { activity.hideKeyboard(); activity.signInAnonymously() }
         }
         view.findViewById<ProgressBar>(R.id.sign_in_loading).visibility = if(vm.authBusy) View.VISIBLE else View.GONE
         view.findViewById<TextView>(R.id.sign_in_error).text = vm.authError.orEmpty()

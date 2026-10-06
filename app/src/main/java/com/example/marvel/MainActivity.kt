@@ -159,6 +159,23 @@ class MainActivity : ComponentActivity() {
             } finally { model.finishGoogleAuth(attempt) }
         }
     }
+    fun signInAnonymously() {
+        val attempt = model.beginAnonymousAuth() ?: return
+        lifecycleScope.launch {
+            try {
+                withTimeout(30_000) { model.authenticateAnonymously(attempt) }
+            } catch (e: Exception) {
+                if (e is CancellationException && e !is kotlinx.coroutines.TimeoutCancellationException) throw e
+                android.util.Log.w("ArchiveAuth", "Anonymous sign-in failed: ${(e as? com.google.firebase.auth.FirebaseAuthException)?.errorCode ?: e.javaClass.simpleName}")
+                val message = when {
+                    e is com.google.firebase.FirebaseException -> authErrorMessage(e)
+                    e is kotlinx.coroutines.TimeoutCancellationException -> "Guest sign-in timed out. Check your connection and retry."
+                    else -> "Guest access is unavailable. Try again or choose another sign-in method."
+                }
+                model.finishAnonymousAuth(attempt, message)
+            } finally { model.finishAnonymousAuth(attempt) }
+        }
+    }
     fun signOut() {
         model.signOut()
         lifecycleScope.launch { runCatching { CredentialManager.create(this@MainActivity).clearCredentialState(ClearCredentialStateRequest()) } }

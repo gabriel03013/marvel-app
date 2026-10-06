@@ -124,6 +124,20 @@
                         android:textColor="@color/archive_red"
                         android:textSize="16sp" />
 
+                    <Button
+                        android:id="@+id/anonymous_sign_in"
+                        style="@style/ArchiveButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:minHeight="48dp"
+                        android:singleLine="false"
+                        android:text="@string/anonymous_sign_in"
+                        android:textColor="@color/archive_red"
+                        android:textSize="16sp" />
+
                     <ProgressBar
                         android:id="@+id/sign_in_loading"
                         android:layout_width="32dp"

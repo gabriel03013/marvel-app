@@ -36,6 +36,7 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     var authName = ""
     var authShowPasswords = false
     var authNotice: String? = null
+    var authErrorSource = "google"
     private var deferAuthState = false
     private var authAttempt = 0
     private var pendingEmailAuth: com.google.android.gms.tasks.Task<com.google.firebase.auth.AuthResult>? = null
@@ -161,6 +162,13 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
     fun beginGoogleAuth(): Int? {
         if (authBusy) return null
         clearAuthForm()
+        authErrorSource = "google"
+        return beginAuthAttempt(deferSession = true)
+    }
+    fun beginAnonymousAuth(): Int? {
+        if (authBusy) return null
+        clearAuthForm()
+        authErrorSource = "anonymous"
         return beginAuthAttempt(deferSession = true)
     }
     fun isAuthAttemptCurrent(attempt: Int) = attempt == authAttempt && authLoading
@@ -170,8 +178,20 @@ class ArchiveViewModel(application: Application) : AndroidViewModel(application)
         val result = awaitAuthTask(auth.signInWithCredential(GoogleAuthProvider.getCredential(token, null)), attempt)
         if (isAuthAttemptCurrent(attempt)) completeAuthAttempt(attempt, acceptSession = true, newAccount = result.additionalUserInfo?.isNewUser == true)
     }
+    suspend fun authenticateAnonymously(attempt: Int) {
+        if (!isAuthAttemptCurrent(attempt)) return
+        awaitAuthTask(auth.signInAnonymously(), attempt)
+        if (isAuthAttemptCurrent(attempt)) completeAuthAttempt(attempt, acceptSession = true)
+    }
     fun finishGoogleAuth(attempt: Int, error: String? = null) {
         if (!isAuthAttemptCurrent(attempt)) return
+        authError = error
+        abandonAuthAttempt(attempt)
+        notifyChanged()
+    }
+    fun finishAnonymousAuth(attempt: Int, error: String? = null) {
+        if (!isAuthAttemptCurrent(attempt)) return
+        authErrorSource = "anonymous"
         authError = error
         abandonAuthAttempt(attempt)
         notifyChanged()
