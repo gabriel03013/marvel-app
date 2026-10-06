@@ -47,8 +47,14 @@ São imagens novas geradas por ferramenta, com prompts embutidos em `impeccable:
 - Salvaguardas em links de dossier (DiscoveryScreens): checagem it.id > 0 antes de gerar ações clicáveis para first_appeared_in_issue, volume e publisher, evitando navegação quebrada com IDs zerados ou nulos da API.
 - Apresentação de scroll no harness de testes: DesignReviewTest agora aguarda 350ms para apresentação SurfaceFlinger após scrollTo tanto para topo quanto para bottom.
 - Falha de comunicação com Firebase Firestore (PERMISSION_DENIED): as regras de segurança de `firebase/firestore.rules` não estavam aplicadas no projeto cloud `marvel-app-72c20`. Foi configurado o `.firebaserc` e feito o deploy das regras via `firebase deploy --only firestore:rules`. Testado e validado no emulador: banner de erro de sincronização desapareceu, gravações e leituras de favoritos/equipes/missões funcionando em tempo real sem erros no Logcat.
+- **Feature Exclusiva — S.H.I.E.L.D. Investigation Board ("Classified Field Connections Nexus")** (Branch `feat/investigation-board`):
+  - Motor de inteligência canônica em `Models.kt` (`analyzeConnections`): cruza deterministamente aliados mútuos, inimigos mútuos, equipes compartilhadas e arcos de história compartilhados, calculando o Convergence Index (0-100), nível de classificação S.H.I.E.L.D. e parecer tático.
+  - Telas imersivas em `InvestigationScreens.kt`: Setup de seleção de agentes Alpha/Beta com polaroids, botões de consulta rápida (Civil War, Mystic & Mutant, Asgardian Rivals, Symbiote War) e quadro de investigação no estilo mural de inteligência (quadrinhos/colagem, recortes, EYES ONLY level 7, links clicáveis de equipes/arcos, e recrutamento direto para missão).
+  - Integrado no `ArchiveViewModel.kt`, navegação no `ScreenRenderer.kt` e pontos de entrada nos Arquivos e no dossiê do personagem.
+  - Testado e verificado no emulador Android (`emulator-5554`) com compilação limpa.
+  - Branch limpa `feat/reading-tracker` criada e pronta para o desenvolvimento da Feature 2 (Trilha Tática de Leitura).
 
-Fontes principais: `ui/ScreenRenderer.kt`, `ui/ArchiveViewModel.kt`, `ui/ArchiveImages.kt`, `ui/DiscoveryScreens.kt`, `ui/AccountScreens.kt`, `ui/MissionScreens.kt`, `ui/AuthScreens.kt`, `data/ComicVineRepository.kt`, `data/Models.kt` e layouts/resources Android.
+Fontes principais: `ui/ScreenRenderer.kt`, `ui/ArchiveViewModel.kt`, `ui/ArchiveImages.kt`, `ui/DiscoveryScreens.kt`, `ui/AccountScreens.kt`, `ui/MissionScreens.kt`, `ui/InvestigationScreens.kt`, `ui/AuthScreens.kt`, `data/ComicVineRepository.kt`, `data/Models.kt` e layouts/resources Android.
 
 ## Verificação já feita — não repetir tudo
 

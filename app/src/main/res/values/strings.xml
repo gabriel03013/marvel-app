@@ -6,10 +6,11 @@
     <string name="search">Search</string>
     <string name="retry">Retry</string>
     <string name="google_sign_in">Continue with Google</string>
+    <string name="anonymous_sign_in">Continue as guest</string>
     <string name="tagline">SEARCH. DISCOVER. RECRUIT.</string>
     <string name="welcome_title">S.H.I.E.L.D.\nARCHIVES</string>
     <string name="welcome_copy">Explore the archive.\nBuild your team.</string>
-    <string name="privacy_note">Your account identifies your private archive. Favorites, teams and missions are saved with Firebase. Comic data by Comic Vine.</string>
+    <string name="privacy_note">Choose an account to keep your archive synced. Guest data is tied to this anonymous session; signing out ends access to it. Comic data by Comic Vine.</string>
     <string name="image_placeholder">Image unavailable</string>
     <string name="clear_search">Clear search</string>
     <string name="selected_member">Selected · Tap to remove</string>

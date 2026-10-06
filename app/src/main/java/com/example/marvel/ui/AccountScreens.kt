@@ -1,5 +1,6 @@
 package com.example.marvel.ui
 
+import android.app.AlertDialog
 import com.example.marvel.data.*
 
 fun ScreenRenderer.home() {
@@ -45,6 +46,7 @@ fun ScreenRenderer.profile() {
     val firstRun = vm.route.screen == "first-run-profile"
     title("Your profile")
     profileRow()
+    if(vm.user?.isAnonymous == true) note("Guest session · Your saved archive is linked to this anonymous account. Signing out ends access to these saved items.")
     if(firstRun) button("Enter the Archives", primary = true) { vm.destination("home") }
     section("Your collection")
     syncStatus()
@@ -52,25 +54,34 @@ fun ScreenRenderer.profile() {
     dataPair("Saved teams", collectionCount(vm.teams.size))
     dataPair("Completed missions", collectionCount(vm.history.size))
     actionRow("Settings", "Account, privacy and data credits.") { vm.navigate("settings") }
-    button("Sign out") { activity.signOut() }
+    button(if(vm.user?.isAnonymous == true) "End guest session" else "Sign out") { confirmSignOut() }
 }
 fun ScreenRenderer.settings() {
     title("Settings")
     section("Account")
-    dataPair("Signed in as", vm.user?.email?.takeIf { it.isNotBlank() } ?: "Email unavailable")
+    dataPair("Signed in as", if(vm.user?.isAnonymous == true) "Guest session" else vm.user?.email?.takeIf { it.isNotBlank() } ?: "Email unavailable")
     dataPair("App language", "English")
     note("Comic Vine names and descriptions are displayed as supplied.")
 
     section("Your data")
     text("Favorites, saved teams and mission history are stored privately under your Firebase account. Recently viewed dossiers and searches stay on this device.")
-    note("Your account name, email and optional Google photo identify your archive. Signing out ends the local authentication session and keeps your saved collection.")
+    note(if(vm.user?.isAnonymous == true) "Your guest collection is stored under this anonymous Firebase account. Signing out ends access to its saved collection." else "Your account name, email and optional Google photo identify your archive. Signing out ends the local authentication session and keeps your saved collection.")
     button("Clear recent dossiers and searches") { vm.clearLocalHistory() }
-    button("Sign out") { activity.signOut() }
+    button(if(vm.user?.isAnonymous == true) "End guest session" else "Sign out") { confirmSignOut() }
 
     section("About the Archives")
     text("A comic archive assembled from paper, ink and collected dossiers. Search, discover and recruit.")
     section("Data credits")
     text("Comic data and character imagery supplied by Comic Vine. This educational app is not affiliated with Marvel. Mission scenarios and evaluations are created by the app.")
+}
+private fun ScreenRenderer.confirmSignOut() {
+    if(vm.user?.isAnonymous != true) { activity.signOut(); return }
+    AlertDialog.Builder(activity)
+        .setTitle("End guest session?")
+        .setMessage("Your saved favorites, teams and mission history are tied to this guest account. Signing out ends access to them.")
+        .setNegativeButton("Keep browsing", null)
+        .setPositiveButton("End session") { _, _ -> activity.signOut() }
+        .show()
 }
 fun ScreenRenderer.collection() {
     title("My collection")

@@ -45,7 +45,14 @@ fun ScreenRenderer.briefing() {
 }
 fun ScreenRenderer.picker() {
     val selecting = vm.selectionPurpose != "mission"
-    title(when(vm.selectionPurpose) { "compareA" -> "Select Character A"; "compareB" -> "Select Character B"; "timeline" -> "Select timeline character"; else -> "Recruit your team" })
+    title(when(vm.selectionPurpose) {
+        "compareA" -> "Select Character A"
+        "compareB" -> "Select Character B"
+        "investigateA" -> "Select Operative Alpha"
+        "investigateB" -> "Select Operative Beta"
+        "timeline" -> "Select timeline character"
+        else -> "Recruit your team"
+    })
     if(!selecting) {
         missionProgress(2)
         dataPair(vm.mission.title, "${vm.roster.size} of ${vm.mission.size} members selected")
