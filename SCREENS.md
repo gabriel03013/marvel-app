@@ -176,10 +176,23 @@ Content:
 - Saved favorites count.
 - Saved teams count.
 - Completed missions count.
+- `Edit profile` action for changing the display name.
 - `Settings` action.
 - `Sign out` action.
 
-### 2.4 SettingsScreen
+### 2.4 EditProfileScreen
+
+Route: `edit-profile`
+
+Content:
+
+- Edit the account display name.
+- Keep email and provider photo read-only.
+- Validate and save the name to Firebase Authentication and the Firestore profile.
+- Show saving, success, and retryable error states.
+- `Cancel` returns to the profile.
+
+### 2.5 SettingsScreen
 
 Route: `settings`
 
@@ -189,6 +202,7 @@ Content:
 - App language display: English.
 - Visual style/about section.
 - API attribution section.
+- Comic Vine base URL and the API paths used by the archive.
 - Privacy note.
 - `Sign out`.
 - `Delete local session` or account action only if implemented safely.
@@ -580,6 +594,7 @@ Route: `collection`
 
 Tabs or segmented controls:
 
+- Cards (booster inventory and collected character cards)
 - Favorites
 - Saved Teams
 - Mission History
@@ -612,6 +627,47 @@ Content:
 Route: `collection/recent`
 
 Optional local-only list of recently opened characters and archive items.
+
+### 7.5 BoosterShopScreen
+
+Route: `booster-shop`
+
+Purpose:
+
+- Add unlimited boosters to the signed-in user's inventory.
+- Explain that the five pack themes are app-created and character records come from Comic Vine.
+
+Pack themes:
+
+- Street Signal
+- Cosmic Signal
+- Mutant Legacy
+- Tech Protocol
+- Legendary Archive
+
+Content:
+
+- Original sealed-pack artwork for each theme.
+- Owned quantity and `Add booster · Free` action.
+- `Open` action for packs in the user's inventory.
+- Link to Cards in My Collection.
+
+### 7.6 BoosterOpeningScreen and BoosterRevealScreen
+
+Routes: `booster-opening/{type}` and `booster-reveal/{type}`
+
+Content:
+
+- Sealed and opened original artwork for every pack theme.
+- Each opening retrieves five distinct character records from Comic Vine and atomically consumes one owned booster while adding cards to Firestore.
+- Reveal one real character card at a time, with a next-card action and a link to its dossier.
+- Repeated cards increment copies and app-generated collection level; never describe that level as an official statistic.
+
+States:
+
+- Loading and retry while Comic Vine or Firestore is unavailable.
+- A pack cannot be opened without inventory or a complete live character pull.
+- Firestore persists card records even if the user leaves the reveal flow.
 
 ## 8. Shared UI states and components
 
@@ -659,6 +715,8 @@ users/{uid}
 users/{uid}/favorites/{characterId}
 users/{uid}/teams/{teamId}
 users/{uid}/missions/{missionId}
+users/{uid}/boosters/{boosterType}
+users/{uid}/collected_characters/{characterId}
 ```
 
 No seed data is required in the Firebase Console. The app must gracefully handle a new user with no documents.
@@ -672,7 +730,7 @@ The screen map is complete when:
 - Login and sign-out work.
 - Search can reach a character detail screen.
 - Favorites persist between sessions.
+- Users can add unlimited boosters, open one, reveal its five live Marvel character cards, and find saved copies and app-generated collection levels in Cards.
 - A user can complete and save a recruitment mission.
 - API errors and missing data do not crash the app.
 - Every screen follows the English copy and visual rules in `DESIGN.md`.
-

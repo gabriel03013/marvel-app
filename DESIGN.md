@@ -314,6 +314,14 @@ All remote images start with the dossier placeholder. A blank URL is missing; a 
 
 Sources: [ScreenRenderer.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ScreenRenderer.kt), [DiscoveryScreens.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/DiscoveryScreens.kt), [MissionScreens.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/MissionScreens.kt), [ArchiveViewModel.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveViewModel.kt), and [ArchiveImages.kt](/home/gabriel/Documents/codes/marvel/app/src/main/java/com/example/marvel/ui/ArchiveImages.kt).
 
+## Booster Collection Extension
+
+The booster shop and reveal use the same warm-paper ground, opaque reading panels, Bebas Neue page titles, Oswald record names, Space Grotesk body copy, vermilion primary actions, and cobalt metadata. Keep pack art proportional in `FIT_CENTER` ImageViews; generated closed/open pack art is decoration, while the pack name, card facts, quantity, level, and actions remain native text. Each theme has its own original closed and opened image pair in `drawable-nodpi`. Generation and crop provenance is recorded in [booster-artwork-provenance.json](/home/gabriel/Documents/codes/marvel/artifacts/booster-artwork-provenance.json).
+
+Booster tiles use quiet paper surfaces with the sealed pack above its live title, description, and quantity. The reveal keeps one Comic Vine character portrait and its documented metadata as the reading focus, with opened-pack art as a smaller cue. Loading, empty, and retry messages use the existing opaque paper state panel. Cards in My Collection retain the existing collection chips and provider-backed character rows.
+
+Repeated-copy progression is labeled `Collection level · app-generated` and must not be presented as a canonical power statistic. Pack theme names describe the app's visual editions; only Comic Vine records identify the pulled characters.
+
 ## Do's and Don'ts
 
 ### Do:

@@ -16,4 +16,15 @@
     <string name="selected_member">Selected · Tap to remove</string>
     <string name="start_mission">Start a Mission</string>
     <string name="input_hint">Enter a value</string>
+    <string name="booster_add_free">Add booster · Free</string>
+    <string name="booster_add_wait">Please wait…</string>
+    <string name="booster_open">Open %1$s</string>
+    <plurals name="booster_card_count_owned">
+        <item quantity="one">%1$d character card · %2$d owned</item>
+        <item quantity="other">%1$d character cards · %2$d owned</item>
+    </plurals>
+    <plurals name="booster_card_count_accessibility">
+        <item quantity="one">%1$d character card. %2$d boosters owned.</item>
+        <item quantity="other">%1$d character cards. %2$d boosters owned.</item>
+    </plurals>
 </resources>

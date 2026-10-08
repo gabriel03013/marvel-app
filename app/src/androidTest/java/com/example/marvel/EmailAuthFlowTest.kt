@@ -7,15 +7,15 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.example.marvel.data.awaitResult
+import com.example.marvel.ui.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.File
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.File
 
-/** Isolated Auth/Firestore emulators; exercises the native XML form and persisted profile. */
 @RunWith(AndroidJUnit4::class)
 class EmailAuthFlowTest {
     private fun waitFor(check: () -> Boolean) {
@@ -28,6 +28,7 @@ class EmailAuthFlowTest {
         }
         fail("Authentication state did not settle")
     }
+
     private fun capture(name: String) {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         Thread.sleep(400)
@@ -35,10 +36,18 @@ class EmailAuthFlowTest {
         val folder = File(context.filesDir, "review").apply { mkdirs() }
         val bitmap = InstrumentationRegistry.getInstrumentation().uiAutomation.takeScreenshot()
         val size = InstrumentationRegistry.getArguments().getString("captureClass", "phone")
-        File(folder, "auth-$name-$size.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        File(folder, "auth-$name-$size.png").outputStream().use {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+        }
     }
-    @Test fun signupSigninRecoveryAndValidation() = runBlocking {
-        val auth = FirebaseAuth.getInstance().apply { useEmulator("10.0.2.2", 9099); signOut() }
+
+    @Test
+    fun signupSigninRecoveryAndValidation() = runBlocking {
+        val auth =
+            FirebaseAuth.getInstance().apply {
+                useEmulator("10.0.2.2", 9099)
+                signOut()
+            }
         val db = FirebaseFirestore.getInstance().apply { useEmulator("10.0.2.2", 8080) }
         val email = "agent-${System.currentTimeMillis()}@example.com"
         val password = "Archive-test-782!"
@@ -65,7 +74,10 @@ class EmailAuthFlowTest {
         waitFor { activity.model.authError == "Passwords do not match." }
         capture("validation")
         scenario.recreate()
-        scenario.onActivity { activity = it; assertEquals(password, it.findViewById<EditText>(R.id.auth_password).text.toString()) }
+        scenario.onActivity {
+            activity = it
+            assertEquals(password, it.findViewById<EditText>(R.id.auth_password).text.toString())
+        }
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
         scenario.onActivity {
             it.findViewById<EditText>(R.id.auth_confirm).setText(password)
@@ -75,13 +87,23 @@ class EmailAuthFlowTest {
             it.findViewById<Button>(R.id.auth_submit).performClick()
         }
         waitFor { !activity.model.authLoading }
-        assertEquals("Signup error: ${activity.model.authError}", "first-run-profile", activity.model.route.screen)
-        assertEquals("Profile update status: ${activity.model.message}", "Email Agent", auth.currentUser!!.displayName)
+        assertEquals(
+            "Signup error: ${activity.model.authError}",
+            "first-run-profile",
+            activity.model.route.screen,
+        )
+        assertEquals(
+            "Profile update status: ${activity.model.message}",
+            "Email Agent",
+            auth.currentUser!!.displayName,
+        )
         val uid = auth.currentUser!!.uid
         waitFor { !activity.model.collectionLoading }
-        // Reads server-backed profile rather than relying on the UI's in-memory name.
         var profile = db.collection("users").document(uid).get().awaitResult()
-        if (profile.getString("displayName") != "Email Agent") { Thread.sleep(1000); profile = db.collection("users").document(uid).get().awaitResult() }
+        if (profile.getString("displayName") != "Email Agent") {
+            Thread.sleep(1000)
+            profile = db.collection("users").document(uid).get().awaitResult()
+        }
         assertEquals("Email Agent", profile.getString("displayName"))
         assertEquals(email, profile.getString("email"))
         assertEquals("", activity.model.authPassword)
@@ -96,7 +118,10 @@ class EmailAuthFlowTest {
             it.findViewById<Button>(R.id.auth_submit).performClick()
         }
         waitFor { !activity.model.authLoading && activity.model.authError != null }
-        assertTrue(activity.model.authError, activity.model.authError!!.contains("Email or password is incorrect"))
+        assertTrue(
+            activity.model.authError,
+            activity.model.authError!!.contains("Email or password is incorrect"),
+        )
         capture("signin-error")
         scenario.onActivity { it.findViewById<Button>(R.id.auth_reset).performClick() }
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()

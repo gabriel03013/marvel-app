@@ -15,4 +15,7 @@ app/google-services.json
 
 # Generated verification output
 artifacts/
+!artifacts/
+artifacts/*
+!artifacts/booster-artwork-provenance.json
 firepit-log.txt
